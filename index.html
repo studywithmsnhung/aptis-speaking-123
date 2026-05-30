@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StudywithMsNhung - Aptis Speaking Master</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap');
+        
+        :root {
+            /* HSK 2 Inspired Palette */
+            --jade-primary: #26A69A; 
+            --jade-dark: #00796B;
+            --jade-light: #E0F2F1;
+            --jade-subtle: #F4F9F9;
+            --bg-main: #F7F9FA;
+            --surface: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-muted: #546E7A;
+            --border-color: #E2E8F0;
+        }
+
+        body { 
+            font-family: 'Inter', 'Noto Sans', sans-serif; 
+            background-color: var(--bg-main); 
+            color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Top Navigation Tabs */
+        .main-tab-bar {
+            scrollbar-width: none; /* Firefox */
+        }
+        .main-tab-bar::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .tab-btn {
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-btn:hover {
+            color: var(--jade-dark);
+            background-color: var(--jade-subtle);
+        }
+        .tab-btn.active {
+            color: var(--jade-primary);
+            border-bottom: 3px solid var(--jade-primary);
+            font-weight: 600;
+        }
+
+        /* Sub Tabs (Pills style) */
+        .sub-tab-btn {
+            color: var(--text-muted);
+            background-color: transparent;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .sub-tab-btn:hover {
+            background-color: var(--jade-subtle);
+            color: var(--jade-dark);
+        }
+        .sub-tab-btn.active {
+            background-color: var(--jade-light);
+            color: var(--jade-dark);
+            font-weight: 600;
+            border-color: var(--jade-primary);
+        }
+
+        /* Content Sections */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mindmap Academic Styles */
+        .mindmap-node { padding: 12px 18px; margin-bottom: 8px; border-radius: 8px; transition: transform 0.2s; border: 1px solid transparent; }
+        .mindmap-node:hover { transform: translateX(4px); }
+        .mm-root { background: var(--jade-primary); color: white; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 4px rgba(38,166,154,0.2); }
+        .mm-branch { background: var(--jade-light); border-left: 4px solid var(--jade-primary); margin-left: 24px; font-weight: 600; color: var(--jade-dark); }
+        .mm-leaf { background: var(--surface); border: 1px solid var(--border-color); border-left: 3px solid #80CBC4; margin-left: 48px; color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Accordion */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        
+        /* Highlight blanks */
+        .blank { display: inline-block; min-width: 40px; border-bottom: 2px solid var(--jade-primary); margin: 0 4px; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CFD8DC; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #B0BEC5; }
+
+        /* Tables (Academic Notion Style) */
+        th { position: sticky; top: 0; z-index: 10; background-color: #F8FAFC; border-bottom: 2px solid var(--border-color); }
+        tr:hover td { background-color: var(--jade-subtle); }
+        
+        /* Card Styles */
+        .academic-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+        
+        /* Callout styling */
+        .callout {
+            background-color: var(--jade-subtle);
+            border-left: 4px solid var(--jade-primary);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden selection:bg-[#E0F2F1] selection:text-[#00796B]">
+
+    <!-- Header Redesign -->
+    <header class="bg-white border-b border-[#E2E8F0] shadow-sm z-20 flex-shrink-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <div class="flex-shrink-0 flex flex-col justify-center">
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-[#2C3E50]">
+                        Studywith<span class="text-[#26A69A]">MsNhung</span>
+                    </h1>
+                    <p class="text-xs md:text-sm font-medium text-[#546E7A] tracking-wide uppercase mt-0.5">
+                        Aptis Speaking Master
+                    </p>
+                </div>
+                <div class="hidden md:flex items-center space-x-2 text-[#546E7A] bg-[#F4F9F9] px-4 py-2 rounded-full border border-[#E0F2F1]">
+                    <i class="fas fa-graduation-cap text-[#26A69A]"></i>
+                    <span class="text-sm font-medium">Academic Edition</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Horizontal Tab Bar -->
+        <nav class="border-t border-[#F1F5F9]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-1 overflow-x-auto main-tab-bar">
+                    <button onclick="openTab('tab1')" id="btn-tab1" class="tab-btn active px-4 md:px-6 py-3 text-sm md:text-base font-medium flex items-center whitespace-nowrap">
+                        <i class="fas fa-sitemap mr-2"></i> 1. Sơ đồ tư duy
+                    </button>
+                    <button onclick="openTab('tab2')" id="btn-tab2" class="tab-btn px-4 md:px-6 py-3 text-sm md:text-base font-medium flex items-center whitespace-nowrap">
+                        <i class="fas fa-file-alt mr-2"></i> 2. Form tổng hợp
+                    </button>
+                    <button onclick="openTab('tab3')" id="btn-tab3" class="tab-btn px-4 md:px-6 py-3 text-sm md:text-base font-medium flex items-center whitespace-nowrap">
+                        <i class="fas fa-spell-check mr-2"></i> 3. Kho Từ Vựng
+                    </button>
+                    <button onclick="openTab('tab4')" id="btn-tab4" class="tab-btn px-4 md:px-6 py-3 text-sm md:text-base font-medium flex items-center whitespace-nowrap">
+                        <i class="fas fa-book-reader mr-2"></i> 4. Bài mẫu (Full)
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow overflow-y-auto bg-[#F7F9FA] p-4 md:p-8">
+        
+        <!-- TAB 1: Sơ đồ tư duy -->
+        <section id="tab1" class="tab-content active max-w-7xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-[#2C3E50]">Sơ đồ tư duy Form Aptis</h2>
+                <p class="text-[#546E7A] mt-2">Nắm vững cấu trúc bài thi thông qua sơ đồ tư duy trực quan.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Mindmap 1: Kể chuyện -->
+                <div class="academic-card p-6">
+                    <div class="mindmap-node mm-root"><i class="fas fa-book-open mr-2"></i>Bài kể chuyện (Part 4)</div>
+                    <div class="mindmap-node mm-branch">1. Mở bài (Opening)</div>
+                    <div class="mindmap-node mm-leaf">Over the course of my life, I have experienced...</div>
+                    <div class="mindmap-node mm-leaf">Each of them has left me with unique emotions...</div>
+                    <div class="mindmap-node mm-leaf">However, there is one that was so memorable...</div>
+                    
+                    <div class="mindmap-node mm-branch">2. Thân bài (Body)</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Bối cảnh:</b> As far as I can remember, it happened...</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Cảm xúc:</b> To be honest, I felt ___ when I first heard...</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Diễn biến:</b> First... After that... Later on... In the end...</div>
+                    
+                    <div class="mindmap-node mm-branch">3. Kết bài (Closing)</div>
+                    <div class="mindmap-node mm-leaf">To me, it was such an unforgettable experience.</div>
+                    <div class="mindmap-node mm-leaf">I learned a really important lesson about...</div>
+                </div>
+
+                <!-- Mindmap 2: A-R-E -->
+                <div class="academic-card p-6">
+                    <div class="mindmap-node mm-root"><i class="fas fa-lightbulb mr-2"></i>Form Phát triển ý (A-R-E)</div>
+                    <div class="mindmap-node mm-branch">Idea 1: Sức khỏe thể chất (Physical Health)</div>
+                    <div class="mindmap-node mm-leaf">Incredibly good for physical health.</div>
+                    <div class="mindmap-node mm-leaf">Keep fit & boost stamina.</div>
+                    <div class="mindmap-node mm-leaf">Strengthen immune system.</div>
+
+                    <div class="mindmap-node mm-branch">Idea 2: Tinh thần (Mental State)</div>
+                    <div class="mindmap-node mm-leaf">Relaxed and lifts my mood.</div>
+                    <div class="mindmap-node mm-leaf">Recharge batteries.</div>
+                    <div class="mindmap-node mm-leaf">Enriches social life / Strengthen bonds.</div>
+
+                    <div class="mindmap-node mm-branch">Idea 3: Kiến thức (Knowledge)</div>
+                    <div class="mindmap-node mm-leaf">Broaden knowledge and horizons.</div>
+                    <div class="mindmap-node mm-leaf">Exposes to new ideas.</div>
+                </div>
+
+                <!-- Mindmap 3: Tả tranh -->
+                <div class="academic-card p-6">
+                    <div class="mindmap-node mm-root"><i class="fas fa-image mr-2"></i>Mô tả 1 tranh</div>
+                    <div class="mindmap-node mm-branch">1. Opening</div>
+                    <div class="mindmap-node mm-leaf">The picture shows... (people who are V-ing)</div>
+                    
+                    <div class="mindmap-node mm-branch">2. Body</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Người:</b> Number -> Age -> Clothes -> Action -> Emotion</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Cảnh:</b> Overall (lively) -> Background -> Weather (I guess...)</div>
+                    
+                    <div class="mindmap-node mm-branch">3. Closing</div>
+                    <div class="mindmap-node mm-leaf">All in all, it is a pleasant picture...</div>
+                </div>
+
+                <!-- Mindmap 4: So sánh tranh -->
+                <div class="academic-card p-6">
+                    <div class="mindmap-node mm-root"><i class="fas fa-clone mr-2"></i>So sánh 2 tranh</div>
+                    <div class="mindmap-node mm-branch">1. Opening</div>
+                    <div class="mindmap-node mm-leaf">The two pictures show people... in different places.</div>
+                    
+                    <div class="mindmap-node mm-branch">2. Body</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Giống:</b> share things in common / look lively / seem to be...</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Khác 1:</b> Number & Age (In the first... whereas...)</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Khác 2:</b> Places (I suppose... and...)</div>
+                    <div class="mindmap-node mm-leaf"><b class="text-[#2C3E50]">Khác 3:</b> Actions (completely different)</div>
+
+                    <div class="mindmap-node mm-branch">3. Closing</div>
+                    <div class="mindmap-node mm-leaf">All in all, despite a few differences... share same atmosphere.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Form tổng hợp -->
+        <section id="tab2" class="tab-content max-w-5xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-[#2C3E50]">Tổng hợp Form Speaking</h2>
+                <p class="text-[#546E7A] mt-2">Cấu trúc trả lời chi tiết cho từng phần thi Aptis.</p>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Kể chuyện -->
+                <div class="academic-card">
+                    <div class="bg-[#26A69A] text-white px-6 py-4 font-bold text-lg flex items-center">
+                        <i class="fas fa-book-open mr-3"></i>1. Form Kể chuyện (Part 4)
+                    </div>
+                    <div class="p-6 text-[#334155] space-y-5 leading-relaxed text-[15px]">
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Mở bài (Opening)</p>
+                            <p>Over the course of my life, I have experienced numerous moments when <span class="blank"></span>.<br>
+                            Each of them has left me with unique emotions and meaningful lessons.<br>
+                            However, there is one that was so memorable that I will never forget it. Let me tell you about it.</p>
+                        </div>
+                        
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Thân bài (Body)</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><b class="text-[#2C3E50]">Bối cảnh:</b> As far as I can remember, it happened about <span class="blank"></span> ago, when I was a student. At that time, I had to <span class="blank"></span>.</li>
+                                <li><b class="text-[#2C3E50]">Cảm xúc ban đầu:</b> To be honest, I felt <span class="blank"></span> when I first heard about it, but everything turned out in an unpredictable way.</li>
+                                <li><b class="text-[#2C3E50]">Diễn biến:</b> First, I + V(ed). After that, <span class="blank"></span> + V(ed). Later on, <span class="blank"></span>.<br>I was so surprised that <span class="blank"></span>. In the end, I realised that + [mệnh đề].</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Kết bài (Closing)</p>
+                            <p>To me, it was such an unforgettable experience. I learned a really important lesson about <span class="blank"></span>.<br>
+                            Since then, I have definitely never <span class="blank"></span> again.</p>
+                        </div>
+
+                        <div class="callout mt-6">
+                            <p class="font-bold text-[#00796B] text-sm mb-1"><i class="fas fa-info-circle mr-1"></i> Ghi chú & Mẹo</p>
+                            <p class="text-sm text-[#546E7A] leading-relaxed">- Tránh lặp “Then... Then...”. Dùng linh hoạt: First / After that / Later on / Eventually / In the end.<br>
+                            - Trả lời câu hỏi phụ (B & C): "As for the second question, I'd say that..." / "Regarding the third question, in my opinion..."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tả 1 tranh -->
+                <div class="academic-card">
+                    <div class="bg-[#26A69A] text-white px-6 py-4 font-bold text-lg flex items-center">
+                        <i class="fas fa-image mr-3"></i>2. Form Mô tả 1 bức tranh
+                    </div>
+                    <div class="p-6 text-[#334155] space-y-5 leading-relaxed text-[15px]">
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Mở bài (Opening)</p>
+                            <p>The picture shows a person who is V-ing O. <i>(Hoặc: people who are...)</i><br>
+                            In this picture, I can see <span class="blank"></span>.</p>
+                        </div>
+                        
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Thân bài (Body)</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><b class="text-[#2C3E50]">Tả người:</b> There are <span class="blank"></span> people in the picture.<br>
+                                S/he looks young / old / middle-aged. Maybe he/she is in his/her <span class="blank"></span>.<br>
+                                S/he is wearing casual / formal clothes. They look nice on him/her.<br>
+                                He/she is V-ing.<br>
+                                Judging from his/her facial expression, I suppose he/she is feeling <span class="blank"></span>.</li>
+                                <li><b class="text-[#2C3E50]">Tả khung cảnh:</b> Overall, the picture looks nice and lively.<br>
+                                In the background, I can see many things, such as <span class="blank"></span>.<br>
+                                I guess the weather is hot / cold / pleasant.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Kết bài (Closing)</p>
+                            <p>All in all, it is a pleasant picture, and it reminds me of <span class="blank"></span> / makes me feel <span class="blank"></span>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- So sánh 2 tranh -->
+                <div class="academic-card">
+                    <div class="bg-[#26A69A] text-white px-6 py-4 font-bold text-lg flex items-center">
+                        <i class="fas fa-clone mr-3"></i>3. Form So sánh 2 bức tranh
+                    </div>
+                    <div class="p-6 text-[#334155] space-y-5 leading-relaxed text-[15px]">
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Mở bài (Opening)</p>
+                            <p>The two pictures show people (relaxing / studying / working / eating) in different places.</p>
+                        </div>
+                        
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Thân bài (Body)</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><b class="text-[#2C3E50]">Điểm giống:</b> Both pictures share several things in common. Both look lively with gorgeous colours. The people in both pictures seem to be <span class="blank"></span>.</li>
+                                <li><b class="text-[#2C3E50]">Khác biệt:</b> There are still some clear differences between the two.<br>
+                                <b>1. Số lượng/tuổi:</b> First of all, let's talk about the number and age of the people. In the first picture, there are <span class="blank"></span> whereas in the second picture, there are <span class="blank"></span>.<br>
+                                <b>2. Nơi chốn:</b> Secondly, the two pictures were taken in different places. I suppose the first one was taken in <span class="blank"></span> and the second was taken in <span class="blank"></span>.<br>
+                                <b>3. Hành động:</b> The actions of the people are also completely different. The first picture shows people V-ing but the second shows people V-ing.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="font-bold text-[#00796B] uppercase tracking-wider text-xs mb-2">Kết bài (Closing)</p>
+                            <p>All in all, despite a few differences, both pictures share the same lively atmosphere, and I really enjoy looking at them.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form A-R-E -->
+                <div class="academic-card">
+                    <div class="bg-[#26A69A] text-white px-6 py-4 font-bold text-lg flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>4. Khung phát triển ý (A-R-E)
+                    </div>
+                    <div class="p-6 text-[#334155] space-y-4 leading-relaxed text-[15px]">
+                        <p class="italic text-[#546E7A] bg-[#F8FAFC] p-3 rounded border border-[#E2E8F0]">State your answer directly first, then expand with reasons and examples.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                            <div class="p-5 bg-white rounded-xl border border-[#E2E8F0] shadow-sm">
+                                <p class="font-bold text-[#00796B] mb-3 text-base">1. Physical Health</p>
+                                <p class="text-sm text-[#546E7A] leading-relaxed">First of all, it is incredibly good for my physical health. It allows me to keep fit and boost my stamina.<br><br>
+                                To be more specific, it helps me strengthen my immune system.<br><br>
+                                For example, [S+V+O] on a daily basis.</p>
+                            </div>
+                            <div class="p-5 bg-white rounded-xl border border-[#E2E8F0] shadow-sm">
+                                <p class="font-bold text-[#00796B] mb-3 text-base">2. Mental State</p>
+                                <p class="text-sm text-[#546E7A] leading-relaxed">Additionally, it also plays an important role in improving my mental wellbeing.<br><br>
+                                It makes me feel relaxed and lifts my mood after a hectic day. It also gives me more chances to recharge my batteries...<br><br>
+                                Moreover, it enriches my social life...</p>
+                            </div>
+                            <div class="p-5 bg-white rounded-xl border border-[#E2E8F0] shadow-sm">
+                                <p class="font-bold text-[#00796B] mb-3 text-base">3. Knowledge</p>
+                                <p class="text-sm text-[#546E7A] leading-relaxed">Lastly, it gives me chances to broaden my knowledge and horizons about the world.<br><br>
+                                I am now able to gain a deeper understanding of <span class="blank"></span>. It exposes me to new ideas...<br><br>
+                                For example, I learned <span class="blank"></span>...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: KHO TỪ VỰNG -->
+        <section id="tab3" class="tab-content max-w-7xl mx-auto h-full flex flex-col">
+            <div class="mb-6 flex-shrink-0">
+                <h2 class="text-2xl font-bold text-[#2C3E50]">Kho Từ Vựng & Cấu Trúc</h2>
+                <p class="text-[#546E7A] mt-2">Tổng hợp từ vựng và cụm từ theo chủ đề.</p>
+            </div>
+            
+            <!-- Sub-tab Navigation (Pills) -->
+            <div class="flex overflow-x-auto space-x-2 mb-6 pb-2 flex-shrink-0 main-tab-bar">
+                <button onclick="openSubTab('sub1')" id="btn-sub1" class="sub-tab-btn active px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">1. Mở bài chung</button>
+                <button onclick="openSubTab('sub2')" id="btn-sub2" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">2. Kết bài chung</button>
+                <button onclick="openSubTab('sub3')" id="btn-sub3" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">3. Tính từ P-M-K</button>
+                <button onclick="openSubTab('sub4')" id="btn-sub4" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">4. Tính từ Khen/Chê</button>
+                <button onclick="openSubTab('sub5')" id="btn-sub5" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">5. Động từ thông dụng</button>
+                <button onclick="openSubTab('sub6')" id="btn-sub6" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">6. Liên từ thông dụng</button>
+            </div>
+
+            <div class="flex-grow overflow-hidden relative">
+                <!-- Sub 1: Mở bài -->
+                <div id="sub1" class="sub-tab-content active h-full overflow-y-auto pb-10">
+                    <div class="grid gap-4">
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-book-open mr-2"></i>Kể chuyện (Storytelling)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"Over the course of my life, I have experienced numerous moments when... Each of them has left me with unique emotions and meaningful lessons. However, there is one that was so memorable that I will never forget it. Let me tell you about it."</p>
+                        </div>
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-image mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg mb-3">"The picture shows a person who is... / people who are..."</p>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"In this picture, I can see..."</p>
+                        </div>
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-clone mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"The two pictures show people [relaxing / studying / working] in different places."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub 2: Kết bài -->
+                <div id="sub2" class="sub-tab-content h-full overflow-y-auto pb-10">
+                    <div class="grid gap-4">
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>Kể chuyện (Storytelling)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"To me, it was such an unforgettable experience. I learned a really important lesson about..."</p>
+                        </div>
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"All in all, it is a pleasant picture, and it reminds me of [ kỷ niệm ] / makes me feel [ cảm xúc ]."</p>
+                        </div>
+                        <div class="academic-card p-6">
+                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
+                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"All in all, despite a few differences, both pictures share the same lively atmosphere, and I really enjoy looking at them."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub 3: Tính từ PMK -->
+                <div id="sub3" class="sub-tab-content h-full overflow-y-auto pb-10">
+                    <div class="academic-card">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Physical - Mental - Knowledge Adjectives</div>
+                        <div class="overflow-x-auto main-tab-bar">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead>
+                                    <tr>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
+                                        <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-pmk"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub 4: Tính từ Khen Chê -->
+                <div id="sub4" class="sub-tab-content h-full overflow-y-auto pb-10">
+                    <div class="academic-card">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Tính từ Giá cả, Tiện ích, Thời gian</div>
+                        <div class="overflow-x-auto main-tab-bar">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead>
+                                    <tr>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
+                                        <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-feedback"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub 5: Động từ -->
+                <div id="sub5" class="sub-tab-content h-full overflow-y-auto pb-10">
+                    <div class="academic-card max-w-4xl mx-auto">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Động từ thông dụng (Verbs/Phrases)</div>
+                        <div class="overflow-x-auto main-tab-bar">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="p-4 font-semibold text-[#00796B] w-1/3">Từ vựng</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-2/3">Nghĩa</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-verbs"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub 6: Liên từ -->
+                <div id="sub6" class="sub-tab-content h-full overflow-y-auto pb-10">
+                    <div class="academic-card max-w-5xl mx-auto">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Liên từ thông dụng (Conjunctions)</div>
+                        <div class="overflow-x-auto main-tab-bar">
+                            <table class="w-full text-left border-collapse min-w-[700px]">
+                                <thead>
+                                    <tr>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-1/4">Chức năng</th>
+                                        <th class="p-4 font-semibold text-[#00796B] w-1/3">Liên từ & Cụm từ</th>
+                                        <th class="p-4 font-semibold text-[#546E7A] w-5/12">Cách dùng / Ví dụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-conj"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Bài mẫu -->
+        <section id="tab4" class="tab-content max-w-5xl mx-auto h-full">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-[#2C3E50]">Thư Viện Bài Mẫu</h2>
+                <p class="text-[#546E7A] mt-2">Tổng hợp các câu hỏi và câu trả lời mẫu chi tiết cho kỳ thi.</p>
+            </div>
+
+            <div class="space-y-4 pb-20 h-auto" id="accordion-container">
+                <!-- Accordion items populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- TAB MANAGEMENT ---
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        function openSubTab(subId) {
+            document.querySelectorAll('.sub-tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(subId).classList.add('active');
+            document.getElementById('btn-' + subId).classList.add('active');
+            
+            const btn = document.getElementById('btn-' + subId);
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        // --- VOCABULARY DATA ---
+        
+        // 3. PMK Adjectives
+        const dataPMK = [
+            { s: "Healthy", a: "immensely beneficial / physically thriving", op: "harmful / detrimental", m: "rất có lợi cho sức khỏe", ex: "Playing sports is immensely beneficial for my body." },
+            { s: "Tired", a: "physically exhausted / completely drained", op: "energetic / vibrant", m: "kiệt sức, mệt mỏi", ex: "I felt completely drained after a long day at work." },
+            { s: "Happy (Mental)", a: "absolutely delighted / over the moon", op: "depressed / miserable", m: "cực kỳ vui vẻ, hạnh phúc", ex: "I was absolutely delighted when I passed the exam." },
+            { s: "Relaxed (Mental)", a: "completely stress-free / truly therapeutic", op: "stressed / anxious", m: "vô cùng thư giãn", ex: "Listening to acoustic music is truly therapeutic for me." },
+            { s: "Useful (Knowledge)", a: "highly informative / incredibly educational", op: "useless / uninformative", m: "rất hữu ích, cung cấp nhiều kiến thức", ex: "Reading history books is highly informative." },
+            { s: "Interesting", a: "intellectually stimulating / deeply fascinating", op: "boring / monotonous", m: "kích thích tư duy, vô cùng thú vị", ex: "The documentary was intellectually stimulating." }
+        ];
+
+        // 4. Feedback Adjectives
+        const dataFeedback = [
+            { s: "Cheap", a: "reasonably priced / highly cost-effective", op: "exorbitant / overpriced", m: "giá cả hợp lý, tiết kiệm", ex: "Taking the bus is a highly cost-effective way to travel." },
+            { s: "Expensive", a: "exorbitantly priced / prohibitively expensive", op: "affordable / cheap", m: "giá cắt cổ, quá đắt", ex: "Eating out every day is prohibitively expensive." },
+            { s: "Fast", a: "incredibly swift / remarkably time-saving", op: "time-consuming / sluggish", m: "rất nhanh, tiết kiệm thời gian", ex: "Shopping online is a remarkably time-saving option." },
+            { s: "Convenient", a: "highly accessible / exceptionally user-friendly", op: "cumbersome / inconvenient", m: "rất tiện lợi, dễ tiếp cận", ex: "Smartphones are exceptionally user-friendly." },
+            { s: "Good", a: "absolutely outstanding / top-notch", op: "terrible / appalling", m: "chất lượng tuyệt đỉnh", ex: "The service at this restaurant is top-notch." },
+            { s: "Beautiful", a: "absolutely breathtaking / truly picturesque", op: "hideous / unattractive", m: "đẹp ngoạn mục (cảnh vật)", ex: "The view from the mountain was absolutely breathtaking." }
+        ];
+
+        // 5. Verbs
+        const dataVerbs = [
+            { w: "Improve / Enhance", m: "cải thiện, nâng cao" }, 
+            { w: "Develop", m: "phát triển" },
+            { w: "Save (time/money)", m: "tiết kiệm (thời gian/tiền bạc)" }, 
+            { w: "Increase / Boost", m: "tăng cường, thúc đẩy" },
+            { w: "Earn / Make money", m: "kiếm (tiền)" }, 
+            { w: "Share", m: "chia sẻ" }, 
+            { w: "Keep in touch", m: "giữ liên hệ" },
+            { w: "Relax / Unwind", m: "thư giãn" }, 
+            { w: "Admire / Look up to", m: "ngưỡng mộ" },
+            { w: "Reduce / Alleviate", m: "giảm thiểu" },
+            { w: "Affect / Influence", m: "ảnh hưởng" },
+            { w: "Destroy / Damage", m: "phá hủy, làm hỏng" }
+        ];
+
+        // 6. Conjunctions
+        const dataConj = [
+            { f: "Thêm ý (Addition)", w: "Moreover, / Furthermore, / In addition,", ex: "Dùng để bổ sung thêm luận điểm (Đứng đầu câu, có dấu phẩy)." },
+            { f: "Tương phản (Contrast)", w: "However, / On the other hand, / Nevertheless,", ex: "Chuyển ý sang mặt trái của vấn đề." },
+            { f: "Nguyên nhân (Reason)", w: "Because of / Due to + Noun phrase", ex: "Due to the heavy rain, I stayed home." },
+            { f: "Kết quả (Result)", w: "Therefore, / Consequently, / As a result,", ex: "Dùng để chốt lại hậu quả hoặc kết quả của hành động trước." },
+            { f: "Ví dụ (Example)", w: "For instance, / To illustrate, / A prime example is...", ex: "Dùng trước khi đưa ra ví dụ cá nhân (thay cho For example)." },
+            { f: "Thứ tự (Sequencing)", w: "First of all, / Secondly, / Lastly,", ex: "Giúp bài nói mạch lạc và logic hơn." }
+        ];
+
+        function build5ColTable(data, tableId) {
+            const tbody = document.getElementById(tableId);
+            data.forEach(row => {
+                tbody.innerHTML += `
+                    <tr class="transition-colors">
+                        <td class="p-4 font-semibold text-[#2C3E50]">${row.s}</td>
+                        <td class="p-4 font-bold text-[#00796B]">${row.a}</td>
+                        <td class="p-4 font-medium text-[#E53935]">${row.op}</td>
+                        <td class="p-4 text-[#546E7A]">${row.m}</td>
+                        <td class="p-4 italic text-[#78909C]">"${row.ex}"</td>
+                    </tr>`;
+            });
+        }
+
+        function build2ColTable(data, tableId) {
+            const tbody = document.getElementById(tableId);
+            data.forEach(row => {
+                tbody.innerHTML += `<tr class="transition-colors"><td class="p-4 font-bold text-[#00796B]">${row.w}</td><td class="p-4 text-[#546E7A]">${row.m}</td></tr>`;
+            });
+        }
+        
+        function build3ColTable(data, tableId) {
+            const tbody = document.getElementById(tableId);
+            data.forEach(row => {
+                tbody.innerHTML += `<tr class="transition-colors"><td class="p-4 font-semibold text-[#546E7A]">${row.f}</td><td class="p-4 font-bold text-[#00796B]">${row.w}</td><td class="p-4 text-[#546E7A]">${row.ex}</td></tr>`;
+            });
+        }
+
+        // --- ALL ESSAYS DATA FROM PDF ---
+        const fullEssays = [
+            {
+                title: "A: Free time activities, hobbies",
+                qa: [
+                    { q: "What are your hobbies?", a: "I am keen on/ I am interested in/ I am crazy about/ I enjoy/ I love... (Playing sports, hanging out with friends, fishing, shopping, travelling...) because it makes me relaxed and comfortable after stressful hours at work." },
+                    { q: "What do you often do in your free time?", a: "I often hang out with my family, do yoga, go swimming and go to the cinema because it helps me have fun and reduce my stress." },
+                    { q: "What do you often do on weekends and weekdays?", a: "On weekdays, I often go to school and go to work. On weekends, I usually spend time with my family and friends. Sometimes, I go camping and have a picnic with my family and friends. It really helps me to forget my stressful time at work." },
+                    { q: "What do you often do when you go out?", a: "I usually join in outdoor activities such as swimming, fishing or playing sports. Sometimes, I go to the cinema with my friends to watch my favorite films." },
+                    { q: "What do you often do with your friends?", a: "I often do many activities with my friends. We sometimes go shopping, drink coffee and play sports. But sometimes we just stay at home to watch movies, play videos and listen to music." },
+                    { q: "What are good and bad hobbies?", a: "In my opinion, there are many good hobbies such as playing sports, listening to music, reading books or learning something new. However, there are some bad hobbies such as playing video games or oversleeping, which makes people feel more tired. People should avoid bad hobbies to have a healthy life." }
+                ]
+            },
+            {
+                title: "B: Family",
+                qa: [
+                    { q: "How many people are there in your family?", a: "There are 5 people in my family including my parents, my brother, my sister and me. I love my family very much because they always support me in my life." },
+                    { q: "What's your father like?", a: "My father is 50 years old. He is kind, friendly and funny. He always makes people laugh and feel happy. Besides, he always helps everyone. I love my father because he is a wonderful man." },
+                    { q: "What's your mother like?", a: "My mother is 50 years old. She is kind, friendly and funny. She always makes people laugh and happy. Besides, she always helps everyone. I love my mother because she is a wonderful woman." },
+                    { q: "What does your mother/father like?", a: "My mother is keen on reading books. She reads books every day. Besides, she enjoys cooking for my family. She usually gets up early and cooks breakfast for my family." },
+                    { q: "Do you have any brothers or sisters? Are they older or younger than you? (1)", a: "I have a younger sister. She is 18 years old. She is younger than me. Now she is a student at Hanoi University. She loves cooking, travelling, singing and dancing." },
+                    { q: "Do you have any siblings? Are they older or younger than you? (2)", a: "I have a younger sister. She is 18 years old. She is younger than me. Now she is a student at Hanoi University. She loves cooking, travelling, singing and dancing." },
+                    { q: "Do you live alone?", a: "No, I don't. Now I am studying in Hanoi. I live with my friends because it helps me save money. I can share everything with my friends." },
+                    { q: "Who do you live with?", a: "Now I am studying in Hanoi. I live with my friends because it helps me save money. I can share everything with my friends. On weekends, I sometimes come back to my hometown with my family." },
+                    { q: "Who do you respect most in your family?", a: "I respect my father the most in my family because he always works hard to support my family. Besides, he is very kind. He always helps everyone. I love my father because he is a wonderful man." },
+                    { q: "Who has had the most influence in your life?", a: "My father has the most influence in my life because he always works hard to support my family. Besides, he is very kind. He always helps everyone. I love my father because he is a wonderful man." },
+                    { q: "Who do you get on well with in your family?", a: "I get on well with everyone in my family. But I get on well with my mother the most because I can share everything with my mother. She is very caring and friendly." },
+                    { q: "Do you ever argue with someone in your family? What do you argue about?", a: "I sometimes argue with my sister about the housework. But after that, we always agree to share the housework." },
+                    { q: "Does your family live in a house or in an apartment?", a: "I live in a house with my family. It is old, small but very beautiful. I love my house because my father built it. Besides, I had great memories with my family here." },
+                    { q: "What does your father/ mother do?", a: "My father is a farmer. He always gets up early in the morning. Then he goes to work. He is very hard-working. He always goes home late." },
+                    { q: "Are you the oldest amongst your brothers and sisters?", a: "I am the oldest in my family. I have one younger brother and one younger sister. They are students. They enjoy watching TV and cooking with my mother." },
+                    { q: "Do your parents let you stay out late?", a: "No, because my parents think that it is dangerous. But now, I have a part-time job in the evening. My parents let me go home before 11p.m." },
+                    { q: "Do you stay with your parents?", a: "Now I am studying in Hanoi. I live with my friends because it helps me save money. I can share everything with my friends. On weekends, I sometimes come back to my hometown with my family." },
+                    { q: "Does your family usually have dinner together?", a: "Yes, my family always has dinner together because dinner is very important. It's the time when my family can sit down, enjoy dinner, watch TV and share about our day." },
+                    { q: "What does your family often do together?", a: "My family often has dinner and watch TV together in the evening because we are busy all day. On the weekends, we sometimes go camping or have a picnic in the park." }
+                ]
+            },
+            {
+                title: "C: Hometown",
+                qa: [
+                    { q: "Where do you come from?", a: "My hometown is in Vinh Phuc province. It's about 30 km from Hanoi. It is very quiet and peaceful with a lot of rice fields. My hometown is famous for Dai Lai resort and Tam Dao mountain. I love my hometown because I was born and grew up here." },
+                    { q: "Where do you live?", a: "Now I am studying and living in Hanoi, the capital of Vietnam. Hanoi is modern, livable and pretty. It's famous for the Hanoi Old Quarter, Hanoi Museum, Hoan Kiem lake and so on." },
+                    { q: "Can you tell me something about your hometown?", a: "My hometown is in Vinh Phuc province. It is about 30 km from Hanoi. It's famous for Dai Lai resort and Tam Dao mountain. Vinh Phuc is very quiet and peaceful with a lot of rice fields. Besides, the people here are very friendly, hard-working and kind. I think that's all about my hometown." },
+                    { q: "Can you tell me some famous landscapes or scenic spots in your hometown?", a: "People coming to my hometown can visit Dai Lai resort because it is very attractive and clean. The weather here is great and the foods are very delicious. Besides, people can also visit Tam Dao mountain because Tam Dao is very peaceful and exciting. And people here are very welcoming." }
+                ]
+            },
+            {
+                title: "D: Countryside",
+                qa: [
+                    { q: "Do you like to live in the countryside in the future?", a: "I am keen on living in the countryside in the future because I think that life here is very peaceful and not stressful. The people here are friendly and helpful. The air is clean and fresh so it's good for my health." },
+                    { q: "What do people living in the countryside like to do?", a: "I can see that people living in the countryside enjoy fishing, gardening and flying kites. Because these activities may make them feel happy, relaxed and comfortable." },
+                    { q: "What are the benefits of living in rural areas?", a: "In my opinion, there are many benefits of living in the countryside. First, the people are very friendly and helpful. Second, the air is really fresh and clean because there are a lot of trees here. Finally, the cost of living is low so people pay less for everything." },
+                    { q: "What's the difference between living in the city and living in the countryside?", a: "I think cities and the countryside are different in many ways. First of all, the cost of living in cities is higher. People need to pay more for everything. However, in the countryside, people pay less for everything. Second, the environment in big cities is polluted but in the countryside, the air is very clean and fresh. Finally, there are more job opportunities in big cities than in the countryside. That's why many people move from the countryside to big cities to live." }
+                ]
+            },
+            {
+                title: "E: Travelling",
+                qa: [
+                    { q: "Do you like travelling?", a: "Yes, I do. I enjoy travelling a lot because I can taste a lot of local food and meet new people. Besides, travelling helps me feel more relaxed and comfortable after a stressful time at work." },
+                    { q: "Do you like to travel alone or with your friends?", a: "I am keen on travelling with my friends. Because it is more fun to go with friends and we can try new food and meet new people together." },
+                    { q: "Have you ever travelled to other places? Where are they?", a: "Yes, I have. I have been to some destinations in Vietnam such as Ha Long Bay, Phu Quoc Island and Sapa. And I love Ha Long Bay the most because I love the sea and swimming. Besides, I can visit beautiful caves and islands then try delicious seafood." },
+                    { q: "What do you usually do when you first arrive in a new place?", a: "First of all, I often go sightseeing. Then I found a good local restaurant to enjoy delicious food. Besides, I often take a lot of photos with my friends to keep my memories." },
+                    { q: "What are the benefits of travelling?", a: "There are many benefits of travelling. First, travelling helps you learn many new things such as new cultures and lifestyles. Besides, you can discover new food, people and places when you travel. Moreover, travelling helps you feel more relaxed and comfortable after stressful times at work." },
+                    { q: "Why do so many people travel nowadays?", a: "I think nowadays more and more people travel because of many reasons. First of all, transportation is more convenient nowadays. People can travel by cars, buses, trains or planes with a cheap price. Besides, people can earn more money so they want to travel more to relax after busy working hours." }
+                ]
+            },
+            {
+                title: "F: Movies",
+                qa: [
+                    { q: "Do you like watching movies?", a: "Yes, I do. I enjoy watching movies on TV or sometimes I go to the cinema with my friends on the weekend. Watching movies makes me relaxed after hard working hours." },
+                    { q: "What kind of movie do you like? Why?", a: "I am keen on comedy the most because they are very funny and exciting. They make me laugh and forget stressful work." },
+                    { q: "Who's your favorite actor/actress?", a: "My favorite actress is Angelia Jolie because she is not only attractive but also talented. Her acting is excellent. Besides, she is a very kind and friendly woman. I love her acting on the movie Maleficent." },
+                    { q: "Do you see films on TV, DVDs or at the cinema?", a: "I seldom watch films on DVDs because it is quite expensive. I usually watch movies on TV because it is convenient for me. I have a big and modern TV at home. That's why I can watch movies every day on TV. On the weekend, I sometimes go to the cinema with my friends because it is great to watch movies on a big screen with delicious popcorn." },
+                    { q: "Is there any film that you've seen several times? What film?", a: "Yeah of course. Although I am 23 years old now, I still enjoy watching Tom and Jerry. I must say that this movie is not only funny but also exciting. It makes me laugh all the time. I can forget all of my stressful working hours. That's why I watch it again and again." },
+                    { q: "Have you ever met a film actor or director?", a: "To be honest, I have not met any film directors but some actors. Because now I am living in Hanoi, sometimes I meet actors on the street but I just can't remember their names." }
+                ]
+            },
+            {
+                title: "G: Music",
+                qa: [
+                    { q: "Do you like music?", a: "Yes I do. I enjoy all kinds of music but I am really interested in Pop music because I love soft melodies. When I listen to this kind of music, I feel more relaxed and comfortable." },
+                    { q: "What kind of music do you like the best?", a: "I am interested in Pop music the most because I love soft and beautiful melodies. Besides, it really helps me to reduce my stress." },
+                    { q: "What are the benefits of listening to music?", a: "Listening to music has a lot of advantages. First, it helps you to relax after long working hours. Then it motivates you to work better. Moreover, music helps you to sleep better. That's why many people listen to music before bedtime." }
+                ]
+            },
+            {
+                title: "H: Food and restaurants",
+                qa: [
+                    { q: "What food do you like the best?", a: "My favorite food is chicken because it is not only delicious but also cheap. I often have it once a week for lunch or dinner. I love fried chicken made by my mother because my mother is a very good cook." },
+                    { q: "What do you usually have for breakfast?", a: "I usually have sticky rice or bread for breakfast. Sometimes, I have Pho a famous food in Hanoi for a change. Moreover, when I get up too late and I don't have enough time to eat, I just drink some milk." },
+                    { q: "What's your favorite meal of the day?", a: "The meal I enjoy the most is breakfast because after a long night's sleep, I often feel very hungry. Besides, I think that breakfast is the most important meal of the day. It always provides me with a lot of energy for the day." },
+                    { q: "Where do you usually have lunch?", a: "I usually have lunch at home because I love home-cooking. Sometimes I go out for lunch with my friends for a change. In that case, we often enjoy Pho or hot pot together." },
+                    { q: "How often do you eat out?", a: "I don't often eat out because it is very expensive. Besides, I think that the food is not really healthy and clean. I often eat out with my friends about once or twice a month when we have a lot of free time." },
+                    { q: "What restaurant do you often go to?", a: "I enjoy trying new food in different restaurants each time but my favorite restaurant is Sen restaurant because I love Vietnamese food. In this restaurant, there is a variety of traditional Vietnamese food such as Pho, sticky rice or spring rolls. Moreover, the food here is very delicious and clean. The staff is very friendly and helpful." },
+                    { q: "Do you prefer eating at home or eating out?", a: "I prefer eating at home because eating at home is clean and safe. Moreover it's great for family members to cook and have meals together. However, sometimes, I also eat out on special days such as birthday parties so that I don't have to do the washing up." },
+                    { q: "Are you trying to eat healthily at the moment?", a: "Yes I am. I think it is so important to have a healthy diet. Besides doing exercise in the morning and afternoon, I often try to eat a lot of vegetables, fruits and drink enough water. Besides, I always try to avoid high-fat food in my meal." }
+                ]
+            },
+            {
+                title: "I: Weather",
+                qa: [
+                    { q: "What is your favorite kind of weather?", a: "I enjoy cloudy and windy weather because it's not too hot and not too cold. That kind of weather makes me feel comfortable and I want to go outside to the park or hang out with my friends." },
+                    { q: "What's your favorite season?", a: "My favorite season is spring because of many reasons. First, the weather in spring is perfect. It's not too hot or too cold so I feel very comfortable. Besides, there are many festivals in spring. I love Tet holiday the best because I can have a long holiday and I can come back home to spend time with my family." },
+                    { q: "Do you think weather affects the way people feel?", a: "Of course. When the weather is sunny and nice, people tend to feel happy. However, when the weather is bad such as boiling hot, freezing cold or rainy weather, people often feel tired, bored or terrible." },
+                    { q: "How do you depend on the weather reports on TV?", a: "In fact, I don't often watch the weather reports on TV because I don't have a TV at home. I usually watch weather reports on Facebook or Youtube because it is more convenient and updated." }
+                ]
+            },
+            {
+                title: "K: Sleeping",
+                qa: [
+                    { q: "How many hours do you sleep every day?", a: "I usually sleep for 7 to 8 hours every day to let my body relax. However, if I need to meet deadlines or do something very important at night, I only sleep for 3 to 5 hours." },
+                    { q: "Is it necessary to take a nap every day?", a: "Yes, I think that it is very important to take a nap at noon because it helps people relax their mind. I am sure that after a good nap, people can work more effectively in the afternoon." },
+                    { q: "How to have a good sleep?", a: "I think that to have a good sleep, people need to go to bed at the same time every night. Besides, having a comfortable bed is good for people's sleep. Finally, everyone should not have a big meal before bedtime." },
+                    { q: "Do you like to get up early in the morning?", a: "Yes, I think that it is very important for me to get up early in the morning because I can enjoy the fresh air in the morning. Besides, I can do morning exercise such as running, jogging, walking or yoga to improve my health." },
+                    { q: "Can you sleep well if you are in a noisy environment?", a: "I am afraid that I cannot sleep in the noisy place. I think that it's not good for my health and my mind to sleep in a noisy place. That's why I always try to have a quiet place to have a good sleep." }
+                ]
+            },
+            {
+                title: "L: Public Holidays",
+                qa: [
+                    { q: "What public holidays do you have in your country?", a: "There are many public holidays in my country, for example May Day, National Day and Tet Holiday. However, Tet is the most popular and longest holiday in my country. People often come back to their homes to spend time with their family members and friends." },
+                    { q: "Do you like public holidays?", a: "Yes. I do. I love public holidays a lot because I have some days off. Besides, I have time to come back home or travel. And this is a chance for me to relax after hard working hours." },
+                    { q: "Which public holidays do you like the most?", a: "I think that my favorite public holiday is Tet because I will have a very long holiday with many days off. I always come back home to spend time with my family. On Tet holiday, I often visit my family members and friends and give them the best wishes." },
+                    { q: "Do you think public holidays are important?", a: "Yes. Public holidays are very important because people can have time to relax after long working hours. Besides, it's time for people to spend time with friends and family." }
+                ]
+            },
+            {
+                title: "M: TV Program",
+                qa: [
+                    { q: "Do you watch TV? / Do you like watching TV?", a: "Yes, I do. I am busy in the daytime so I often watch TV in the evening when I have dinner. I love watching the news on TV because I can update the information around me." },
+                    { q: "What TV program do you like watching?", a: "I enjoy watching the news because I want to know what's happening around me. Besides, I love watching game shows because it's exciting and funny." },
+                    { q: "What TV channel do you often watch?", a: "My favorite channel is VTV3 because there are many interesting game shows on VTV3. Besides, I often watch the news in the evening to update the information." }
+                ]
+            },
+            {
+                title: "N: Transportation",
+                qa: [
+                    { q: "How do you go to/get to school/ work?", a: "I often go to school/ work by motorbike because it's convenient. Besides, it's easy to move around the streets of Hanoi." },
+                    { q: "What's your favorite means of transport?", a: "My favorite means of transport is motorbike because it's convenient and easy to move around. I feel very comfortable when I use the motorbike. Besides, it's not too expensive to buy a motorbike in Vietnam." },
+                    { q: "Do you often use public transport?", a: "I don't often use public transport because I have a motorbike. Sometimes when it's rainy or too hot, I take the bus or a taxi because it will make me feel more comfortable." },
+                    { q: "Which do you prefer, public transport or private transport?", a: "I prefer private transport because I think that it's more convenient. Besides, I can travel anywhere and anytime I like." },
+                    { q: "Can you say something about the transportation in your hometown?", a: "In my opinion, the biggest problem of transportation in my hometown is traffic jams. I must spend a lot of time on the street because of the traffic jam and I think that it's really a waste of my time." },
+                    { q: "What is the most common means of transport in your country?", a: "In Vietnam, motorbikes are the most popular means of transport. People can see motorbikes everywhere in Vietnam because it's convenient, cheap and easy to move around." },
+                    { q: "Do traffic jams often occur in your hometown? How to solve the problem?", a: "Yes. Traffic jams always happen in my hometown. People must spend a lot of time on the street because of the traffic jam and I think that it's terrible. To solve this problem, I think that the government should improve public transport. For example, they should reduce the ticket price and provide more convenience." },
+                    { q: "What changes in transportation have taken place in the past several years in Vietnam?", a: "I think that there are more cars on the street because nowadays people are having better lives. However, motorbikes are still the most popular means of transport because it's cheap, convenient and easy to move around." }
+                ]
+            },
+            {
+                title: "1. Friends",
+                qa: [
+                    { q: "Do you have many friends? Are they casual acquaintances or close friends?", a: "I have many friends but only some of them are close. I only love to share my story with my close friends." },
+                    { q: "Do you prefer to stay with your family or with your friends?", a: "I love to stay with my friends because I have more freedom. I feel very relaxed and comfortable when I stay with my friends." },
+                    { q: "Do you prefer one or 2 close friends or many friends?", a: "I love to have one or 2 close friends because I have many close friends, I will not have enough time to spend with them. Besides, it is easy for me to share my story and secrets with one or 2 close friends." },
+                    { q: "Are your friends mostly your age or different ages?", a: "Most of my friends are my same age because we met at school or university. I think that it is easy for me to share my story with them." },
+                    { q: "Do you usually see your friends during the week or at weekends?", a: "I often hang out with my friends on the weekends because we are busy during the week. On the weekend, we have a lot of free time to hang out and relax." },
+                    { q: "The last time you saw your friends, what did you do together?", a: "I met my friend last weekend. We went shopping, fishing and camping together. That was very fun and happy." }
+                ]
+            },
+            {
+                title: "2. Clothes",
+                qa: [
+                    { q: "Are clothes and clothing fashions important to you?", a: "Yes, I think that clothes and fashions are very important to me. Clothes and fashions help me to be more confident and beautiful. Sometimes, clothes and fashions also make people more active and young." },
+                    { q: "What different clothes do you wear for different situations?", a: "When I go to work, I need to dress formally so I often wear a shirt and trousers. At home, I love to wear comfortable clothes so I wear jeans and T-shirt." },
+                    { q: "Do you wear different styles of clothes now compared to 10 years ago?", a: "Yes, 10 years ago I used to wear colorful clothes because it made me look young. However, now I tend to wear formal clothes because it makes me professional." },
+                    { q: "Do you think the clothes we wear say something about who we are?", a: "Yes they do. Some people are very careful about what they wear because they want to be professional and stylish. Other people tend to wear high-end and famous clothes because they want to show their status." }
+                ]
+            },
+            {
+                title: "3. Communication and mobile phones",
+                qa: [
+                    { q: "How do you usually keep in touch with members of your family?", a: "I keep in touch with my family by phone because it is very convenient and quick. Besides, I also can see the faces of my family members by using video calls." },
+                    { q: "Do you prefer to speak to people by phone or by writing emails?", a: "It depends. I often talk on the phone with my family and friends. However, I usually send emails to my teacher or boss because it is more professional." },
+                    { q: "Do you ever write letters by hand?", a: "When I was small, I used to write a letter by hand. But now I usually send an email because it's easy to use and convenient." },
+                    { q: "How often do you use your mobile phone?", a: "I use my mobile phone every day. I use it to contact my family and friends. Besides, I also play games, surf the Internet, work and study on my phone." },
+                    { q: "Can you describe your mobile phone?", a: "Now I am using an Iphone. It is very convenient and easy to use. It has a good camera and a big screen. I can do many things on my phone such as playing games or studying." },
+                    { q: "What was your first mobile phone?", a: "My first mobile phone was a Nokia. In the past it was expensive. My father bought it for me to study. That Nokia was very convenient and helpful." },
+                    { q: "How has your mobile phone changed your life?", a: "Mobile phones changed my life a lot. It helps me to keep in touch with my family and friends. Besides, it is convenient for me to study, work and relax." }
+                ]
+            },
+            {
+                title: "4. Reading",
+                qa: [
+                    { q: "Do you like reading?", a: "Yes I love reading a lot. I read many things such as novels, newspapers or magazines. I love reading because it helps me relax after long working hours." },
+                    { q: "Do you usually read for leisure or for work purposes?", a: "In my free time, I enjoy reading books for fun. But sometimes, I read books about laws because it's good for my work." },
+                    { q: "What was your favorite book or story when you were a child?", a: "When I was small, I loved to read Doraemon because it's funny and entertaining. Besides, I also can learn many things from this book." },
+                    { q: "Do you think it's important that children read regularly?", a: "Yes. I think reading is so important for children because it helps children to have more information about the world. Besides, some books may help children to reduce stress after school." }
+                ]
+            },
+            {
+                title: "5. Work",
+                qa: [
+                    { q: "What's your job?", a: "I work as a teacher. I love my job because I have a chance to work with my students who are young and confident." },
+                    { q: "Do you enjoy your job?", a: "Yes I really love my job because I have a chance to meet many people. Besides, my job is stable so I have a lot of time to take care of my family." },
+                    { q: "What's the best thing about your job?", a: "The best thing about my job is that I can help many people to have more knowledge and useful lessons. I also can learn many things from my co-workers and students." },
+                    { q: "Do you prefer working alone or with others? Why?", a: "I love to work with many people because there will be more good ideas. Besides, I also can learn many things from my teammates." }
+                ]
+            },
+            {
+                title: "6. School and study",
+                qa: [
+                    { q: "What was your major at university?", a: "My major at the university is English. I love it so much because it helps me to follow my dreams in the future. Sometimes it is very stressful to study but I still try my best to meet all the deadlines." },
+                    { q: "What were your favorite subjects at high school/ secondary school/ primary school?", a: "I used to study a lot of subjects. But my favorite subject is English because I think that English is very important and interesting." },
+                    { q: "What kind of secondary school did you go to?", a: "I studied at Trung Ha secondary school in my hometown. It is about 2 km from my house. It is quite small but I love my secondary school." },
+                    { q: "Did you like it? Why (not)?", a: "Yes I love my secondary school because I could learn many things there. Besides, I had a lot of friends here." },
+                    { q: "How much homework did you have?", a: "I had a lot of homework because I had to study many subjects at school. I often finish my homework in 3-4 hours." },
+                    { q: "Did you have to wear a uniform?", a: "Yes I had to wear a uniform because it is compulsory. I was proud to wear my school's uniform." },
+                    { q: "Was the discipline very strict?", a: "Yes the discipline was strict. Students have to wear uniforms and go to school on time. Besides, we must finish all our homework and send it to teachers on time." },
+                    { q: "Which subjects were you good and bad at?", a: "I was good at Maths and Physics because I love to study these subjects. But I was bad at History because I could not remember things well." }
+                ]
+            },
+            {
+                title: "7. Learning English",
+                qa: [
+                    { q: "Do you like learning English?", a: "Yes I do. I love English because it is an international language. Besides, it is interesting and important for my job. I can have a higher salary if I have good English." },
+                    { q: "How long have you been learning English?", a: "I started learning English when I was small. However, I just focused on studying grammar and structures. Nowadays, English is very important for my job so I need to improve my speaking skills." },
+                    { q: "How did you study it?", a: "When I was at school, I learned English in class by doing grammar exercises and tests. Now I listen to English songs and stories to learn English." },
+                    { q: "Do you think it's important to learn languages?", a: "Yes. If you can speak foreign languages like English, you can have a good job with a high salary. Besides, you can travel to many countries in the world." },
+                    { q: "Is it important for children to learn foreign languages?", a: "Yes, I think that it is very important for children to learn foreign languages because it is easy for people to learn languages when they are small." }
+                ]
+            },
+            {
+                title: "8. Social networks",
+                qa: [
+                    { q: "What kinds of social networking websites do you like to use?", a: "My favorite social networking website is Facebook. I often keep in touch with my family and friends by making video calls with them." },
+                    { q: "What kinds of people do you like to be friends with on those websites?", a: "I love to make friends with people who share the same hobbies with me so that I can talk about our interests." },
+                    { q: "Is it easy to find real friends on social networking websites?", a: "Yes because in addition to chatting online, people can meet face to face and share stories and hobbies together." }
+                ]
+            },
+            {
+                title: "9. Animals",
+                qa: [
+                    { q: "Do you like animals?", a: "Yes, I'm a big fan of animals. The reason why I'm into animals is that they look so cute and friendly to people. I have some pets at home and people also say that I'm an animal lover." },
+                    { q: "Do you like to see animals in the zoo?", a: "No, not really. I'm not fond of going to the zoo. This is because I feel sorry for the animals when they can't live in their natural habitat and have to be kept inside a cage and become something entertaining for humans to watch. I used to go to the zoo when I was a kid but now I no longer go there." },
+                    { q: "Have you ever had a pet before?", a: "Yes, actually, I'm keeping some pets at home, a puppy and a kitten. I'm crazy about playing with them, feeding them and walking the dog. Whenever I spend time with them, I feel comfortable and relaxed." }
+                ]
+            },
+            {
+                title: "10. Weather (Advanced)",
+                qa: [
+                    { q: "How's the weather in your country?", a: "Vietnam is a tropical climate country so it's hot all year round. However, I live in the north of Vietnam so we still have 4 seasons: spring, summer, autumn and winter. I'm pretty interested in the weather where I live." },
+                    { q: "What's your favourite season?", a: "I'm crazy about spring. This is due to the fact that the weather in spring is very pleasant. It's cool, humid because it drizzles all the time. Moreover, in spring, we have the biggest public holiday which is Tet holiday. I have the longest break and I have a chance to relax and spend quality time with my family." },
+                    { q: "Does weather affect people's feelings?", a: "Yes, I definitely believe that weather can affect our feelings and emotions. For example, if it's sunny and warm, people feel more energetic and productive. In contrast, if it's rainy and gloomy, people tend to stay at home and feel bored." }
+                ]
+            },
+            {
+                title: "11. Houses",
+                qa: [
+                    { q: "Can you tell me about your house?", a: "I live in a 3-storey house with my family. It's quite spacious for our big family. Each of us have our own room and the kitchen is very large because everyone in my family enjoys cooking. We also have a small garden and a big yard." },
+                    { q: "What's your favourite place in the house?", a: "I definitely adore my bedroom the most. The reason for this is because I have my freedom and privacy in my room. I can do whatever I want without interrupting other people. Besides, I also decorate my room by myself so I also feel really cozy and comfortable when I spend time in my room." },
+                    { q: "Do you plan to live there in the future?", a: "No, I don't. The reason why I don't choose to live here in the future is because I want to be more independent by moving out. I plan to move out after graduating from university and rent a flat near my workplace. Besides, when you live alone, you also have more freedom and privacy and I love that." }
+                ]
+            },
+            {
+                title: "12. Health",
+                qa: [
+                    { q: "What do you do to keep fit and healthy?", a: "I'm a person who is very concerned about health, so I always try my best to stay healthy. For example, I try to have a healthy diet by eating more vegetables and fruits and avoid eating meat, oily and sugary food. In addition, I also spend 1 hour in the afternoon cycling in the park near my house. If I don't have a lot of work to do in the evening, then I will go to bed early." },
+                    { q: "Do you do anything which is not healthy?", a: "Yes. Sometimes, I stay up late. This is because a lot of things at work and school need to be finished. Besides, I also don't do medical check-ups regularly as I'm scared of going to the hospital." },
+                    { q: "What do you think is more important, eating a healthy diet or doing exercise?", a: "I don't think either eating healthily or doing exercise is more important than the other one. You need to combine both of them to have a good health condition. For example, if you work out at the gym but still eat like a horse and even eat unhealthy food such as processed food, fast food, then you can't lose weight or become fit." }
+                ]
+            },
+            {
+                title: "13. The Internet",
+                qa: [
+                    { q: "How often do you go online?", a: "I use the Internet on a daily basis. The reason I go online everyday is because I use it to serve my job and my studies at school. Especially because of Covid-19, I have to switch all of my offline classes into online classes." },
+                    { q: "What do you use the Internet for?", a: "I use it for a lot of purposes. Firstly, I use it for my studies at school. Our school closes due to Covid-19 and I have to learn online. Secondly, I use the Internet for my work. I'm a teacher so I need to go online to search for teaching materials and I also work with my students through social media and emails. Last but not least, I entertain myself by browsing the web, listening to music on Youtube and watching films on the Internet." },
+                    { q: "What's your favourite website?", a: "My favourite website is Youtube which is the biggest web to upload videos or watch other people's videos. The reason I'm a big fan of this website is that it's extremely useful for both studying and entertainment. For instance, I watch lesson videos online before class or in the evening I listen to video music of my favourite singers." }
+                ]
+            },
+            {
+                title: "14. Shopping",
+                qa: [
+                    { q: "Do you enjoy shopping?", a: "Yes, I'm crazy about shopping. The reason for this is because it helps me to reduce stress after work. I also go to the shopping mall near my house at the weekend to buy stuff that I need." },
+                    { q: "What do you often shop for?", a: "I usually buy food and clothes. I'm a foodie and I'm also really into cooking, so I go to the market to buy fresh ingredients every day. Moreover, as a woman, I'm also interested in fashion, so I love going shopping for clothes and see what is trendy." },
+                    { q: "Do you like shopping online or offline?", a: "I prefer online shopping because of some reasons. The first reason is because it's very quick. You can buy everything just with a click of the mouse and the stuff will be shipped to you. I'm very busy, so online shopping is very time-saving. The second reason is that you have more options on the Internet. You can almost find everything on the Internet, from the smallest things to the very uncommon things. You also can buy from all shops in the country and even in the world instead of just buying things from shops where you live." }
+                ]
+            }
+        ];
+
+        function populateEssays() {
+            const container = document.getElementById('accordion-container');
+            fullEssays.forEach((section) => {
+                const block = document.createElement('div');
+                block.className = 'academic-card transition-colors hover:border-[#B2DFDB]';
+                
+                const header = document.createElement('button');
+                header.className = 'w-full text-left px-6 py-4 font-bold text-[#2C3E50] bg-white hover:bg-[#F8FAFC] flex justify-between items-center transition-colors touch-manipulation';
+                header.innerHTML = `
+                    <span class="text-base md:text-lg flex items-center">
+                        ${section.title} 
+                        <span class="ml-3 text-xs font-semibold text-[#00796B] bg-[#E0F2F1] px-2.5 py-1 rounded-full border border-[#B2DFDB]">${section.qa.length} câu</span>
+                    </span> 
+                    <i class="fas fa-chevron-down text-[#26A69A] transition-transform duration-300"></i>
+                `;
+                
+                const content = document.createElement('div');
+                content.className = 'accordion-content bg-[#F4F9F9] border-t border-[#E2E8F0]';
+                
+                let contentHTML = '<div class="p-6 space-y-6">';
+                section.qa.forEach(qa => {
+                    contentHTML += `
+                        <div class="border-l-4 border-[#26A69A] pl-5 bg-white p-4 rounded shadow-sm border border-[#E2E8F0] border-l-[#26A69A]">
+                            <p class="font-bold text-[#00796B] text-[15px] md:text-base leading-snug mb-2">Q: ${qa.q}</p>
+                            <p class="text-[#334155] text-sm md:text-[15px] leading-relaxed">A: ${qa.a}</p>
+                        </div>
+                    `;
+                });
+                contentHTML += '</div>';
+                content.innerHTML = contentHTML;
+
+                header.onclick = () => {
+                    const icon = header.querySelector('i');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                        header.classList.remove('bg-[#F4F9F9]');
+                    } else {
+                        // Collapse all other tabs
+                        document.querySelectorAll('.accordion-content').forEach(el => el.style.maxHeight = null);
+                        document.querySelectorAll('.fa-chevron-down').forEach(el => el.style.transform = 'rotate(0deg)');
+                        document.querySelectorAll('.academic-card button').forEach(el => el.classList.remove('bg-[#F4F9F9]'));
+                        
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                        header.classList.add('bg-[#F4F9F9]');
+                        
+                        // Scroll to top of clicked accordion after a short delay
+                        setTimeout(() => {
+                            block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 300);
+                    }
+                };
+
+                block.appendChild(header);
+                block.appendChild(content);
+                container.appendChild(block);
+            });
+        }
+
+        // --- INIT ALL ---
+        window.onload = () => {
+            build5ColTable(dataPMK, 'table-pmk');
+            build5ColTable(dataFeedback, 'table-feedback');
+            build2ColTable(dataVerbs, 'table-verbs');
+            build3ColTable(dataConj, 'table-conj');
+            populateEssays();
+            
+            // Open default tabs
+            openTab('tab1');
+            openSubTab('sub1');
+        };
+    </script>
+</body>
+</html>
