@@ -52,29 +52,9 @@
             font-weight: 600;
         }
 
-        /* Sub Tabs (Pills style) */
-        .sub-tab-btn {
-            color: var(--text-muted);
-            background-color: transparent;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        .sub-tab-btn:hover {
-            background-color: var(--jade-subtle);
-            color: var(--jade-dark);
-        }
-        .sub-tab-btn.active {
-            background-color: var(--jade-light);
-            color: var(--jade-dark);
-            font-weight: 600;
-            border-color: var(--jade-primary);
-        }
-
         /* Content Sections */
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        .sub-tab-content { display: none; }
-        .sub-tab-content.active { display: block; animation: fadeIn 0.2s ease-in-out; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -379,108 +359,107 @@
             </div>
         </section>
 
-        <!-- TAB 3: KHO TỪ VỰNG -->
-        <section id="tab3" class="tab-content max-w-7xl mx-auto h-full flex flex-col">
-            <div class="mb-6 flex-shrink-0">
+        <!-- TAB 3: KHO TỪ VỰNG (No Sub-tabs anymore, scroll vertically!) -->
+        <section id="tab3" class="tab-content max-w-7xl mx-auto">
+            <div class="mb-8 flex-shrink-0">
                 <h2 class="text-2xl font-bold text-[#2C3E50]">Kho Từ Vựng & Cấu Trúc</h2>
-                <p class="text-[#546E7A] mt-2">Tổng hợp từ vựng và cụm từ theo chủ đề.</p>
+                <p class="text-[#546E7A] mt-2">Tổng hợp toàn bộ từ vựng và cụm từ. Kéo xuống để xem tất cả chủ đề.</p>
             </div>
             
-            <!-- Sub-tab Navigation (Pills) -->
-            <div class="flex overflow-x-auto space-x-2 mb-6 pb-2 flex-shrink-0 main-tab-bar">
-                <button onclick="openSubTab('sub1')" id="btn-sub1" class="sub-tab-btn active px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">1. Mở bài chung</button>
-                <button onclick="openSubTab('sub2')" id="btn-sub2" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">2. Kết bài chung</button>
-                <button onclick="openSubTab('sub3')" id="btn-sub3" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">3. Tính từ P-M-K</button>
-                <button onclick="openSubTab('sub4')" id="btn-sub4" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">4. Tính từ Khen/Chê</button>
-                <button onclick="openSubTab('sub5')" id="btn-sub5" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">5. Động từ thông dụng</button>
-                <button onclick="openSubTab('sub6')" id="btn-sub6" class="sub-tab-btn px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm border">6. Liên từ thông dụng</button>
-            </div>
+            <div class="space-y-8 pb-10">
+                
+                <!-- Section: Mở bài & Kết bài chung -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Mở bài -->
+                    <div class="academic-card p-6">
+                        <h3 class="text-lg font-bold text-[#2C3E50] mb-4 border-b border-[#E2E8F0] pb-2">1. Mở bài chung</h3>
+                        <div class="space-y-5">
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-book-open mr-2"></i>Kể chuyện (Storytelling)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"Over the course of my life, I have experienced numerous moments when... Each of them has left me with unique emotions and meaningful lessons. However, there is one that was so memorable that I will never forget it. Let me tell you about it."</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-image mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r mb-2">"The picture shows a person who is... / people who are..."</p>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"In this picture, I can see..."</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-clone mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"The two pictures show people [relaxing / studying / working] in different places."</p>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="flex-grow overflow-hidden relative">
-                <!-- Sub 1: Mở bài -->
-                <div id="sub1" class="sub-tab-content active h-full overflow-y-auto pb-10">
-                    <div class="grid gap-4">
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-book-open mr-2"></i>Kể chuyện (Storytelling)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"Over the course of my life, I have experienced numerous moments when... Each of them has left me with unique emotions and meaningful lessons. However, there is one that was so memorable that I will never forget it. Let me tell you about it."</p>
-                        </div>
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-image mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg mb-3">"The picture shows a person who is... / people who are..."</p>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"In this picture, I can see..."</p>
-                        </div>
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-clone mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"The two pictures show people [relaxing / studying / working] in different places."</p>
+                    <!-- Kết bài -->
+                    <div class="academic-card p-6">
+                        <h3 class="text-lg font-bold text-[#2C3E50] mb-4 border-b border-[#E2E8F0] pb-2">2. Kết bài chung</h3>
+                        <div class="space-y-5">
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-flag-checkered mr-2"></i>Kể chuyện (Storytelling)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"To me, it was such an unforgettable experience. I learned a really important lesson about..."</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-flag-checkered mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"All in all, it is a pleasant picture, and it reminds me of [ kỷ niệm ] / makes me feel [ cảm xúc ]."</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#00796B] mb-2 text-[15px]"><i class="fas fa-flag-checkered mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
+                                <p class="text-[#334155] text-sm md:text-[15px] border-l-4 border-[#26A69A] bg-[#F4F9F9] p-3 rounded-r">"All in all, despite a few differences, both pictures share the same lively atmosphere, and I really enjoy looking at them."</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sub 2: Kết bài -->
-                <div id="sub2" class="sub-tab-content h-full overflow-y-auto pb-10">
-                    <div class="grid gap-4">
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>Kể chuyện (Storytelling)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"To me, it was such an unforgettable experience. I learned a really important lesson about..."</p>
-                        </div>
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>Mô tả 1 tranh (Picture Description)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"All in all, it is a pleasant picture, and it reminds me of [ kỷ niệm ] / makes me feel [ cảm xúc ]."</p>
-                        </div>
-                        <div class="academic-card p-6">
-                            <h4 class="font-bold text-[#00796B] mb-3 text-lg"><i class="fas fa-flag-checkered mr-2"></i>So sánh 2 tranh (Picture Comparison)</h4>
-                            <p class="text-[#334155] text-base border-l-4 border-[#26A69A] bg-[#F4F9F9] p-4 rounded-r-lg">"All in all, despite a few differences, both pictures share the same lively atmosphere, and I really enjoy looking at them."</p>
-                        </div>
+                <!-- Section: Tính từ PMK -->
+                <div class="academic-card">
+                    <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4">
+                        <h3 class="text-lg font-bold text-[#2C3E50]">3. Tính từ Physical - Mental - Knowledge</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[900px]">
+                            <thead>
+                                <tr>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
+                                    <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-pmk"></tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Sub 3: Tính từ PMK -->
-                <div id="sub3" class="sub-tab-content h-full overflow-y-auto pb-10">
-                    <div class="academic-card">
-                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Physical - Mental - Knowledge Adjectives</div>
-                        <div class="overflow-x-auto main-tab-bar">
-                            <table class="w-full text-left border-collapse min-w-[900px]">
-                                <thead>
-                                    <tr>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
-                                        <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-pmk"></tbody>
-                            </table>
-                        </div>
+                <!-- Section: Tính từ Khen Chê -->
+                <div class="academic-card">
+                    <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4">
+                        <h3 class="text-lg font-bold text-[#2C3E50]">4. Tính từ Giá cả, Tiện ích, Thời gian</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[900px]">
+                            <thead>
+                                <tr>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
+                                    <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
+                                    <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-feedback"></tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Sub 4: Tính từ Khen Chê -->
-                <div id="sub4" class="sub-tab-content h-full overflow-y-auto pb-10">
-                    <div class="academic-card">
-                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Tính từ Giá cả, Tiện ích, Thời gian</div>
-                        <div class="overflow-x-auto main-tab-bar">
-                            <table class="w-full text-left border-collapse min-w-[900px]">
-                                <thead>
-                                    <tr>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Từ Đơn Giản</th>
-                                        <th class="p-4 font-semibold text-[#00796B] w-1/4">Nâng Cấp (B2-C1)</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Trái Nghĩa</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/6">Ý Nghĩa</th>
-                                        <th class="p-4 font-semibold text-[#546E7A] w-1/3">Ví dụ</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-[#E2E8F0] text-sm text-[#334155]" id="table-feedback"></tbody>
-                            </table>
+                <!-- Section: Động từ & Liên từ -->
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <!-- Động từ -->
+                    <div class="academic-card h-fit">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4">
+                            <h3 class="text-lg font-bold text-[#2C3E50]">5. Động từ thông dụng</h3>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Sub 5: Động từ -->
-                <div id="sub5" class="sub-tab-content h-full overflow-y-auto pb-10">
-                    <div class="academic-card max-w-4xl mx-auto">
-                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Động từ thông dụng (Verbs/Phrases)</div>
-                        <div class="overflow-x-auto main-tab-bar">
+                        <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr>
@@ -492,14 +471,14 @@
                             </table>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sub 6: Liên từ -->
-                <div id="sub6" class="sub-tab-content h-full overflow-y-auto pb-10">
-                    <div class="academic-card max-w-5xl mx-auto">
-                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4 font-bold text-lg text-[#2C3E50]">Liên từ thông dụng (Conjunctions)</div>
-                        <div class="overflow-x-auto main-tab-bar">
-                            <table class="w-full text-left border-collapse min-w-[700px]">
+                    <!-- Liên từ -->
+                    <div class="academic-card h-fit">
+                        <div class="bg-[#F8FAFC] border-b border-[#E2E8F0] px-5 py-4">
+                            <h3 class="text-lg font-bold text-[#2C3E50]">6. Liên từ thông dụng</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[500px]">
                                 <thead>
                                     <tr>
                                         <th class="p-4 font-semibold text-[#546E7A] w-1/4">Chức năng</th>
@@ -516,13 +495,13 @@
         </section>
 
         <!-- TAB 4: Bài mẫu -->
-        <section id="tab4" class="tab-content max-w-5xl mx-auto h-full">
+        <section id="tab4" class="tab-content max-w-5xl mx-auto">
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-[#2C3E50]">Thư Viện Bài Mẫu</h2>
                 <p class="text-[#546E7A] mt-2">Tổng hợp các câu hỏi và câu trả lời mẫu chi tiết cho kỳ thi.</p>
             </div>
 
-            <div class="space-y-4 pb-20 h-auto" id="accordion-container">
+            <div class="space-y-4 pb-20" id="accordion-container">
                 <!-- Accordion items populated by JS -->
             </div>
         </section>
@@ -537,17 +516,9 @@
             
             document.getElementById(tabId).classList.add('active');
             document.getElementById('btn-' + tabId).classList.add('active');
-        }
-
-        function openSubTab(subId) {
-            document.querySelectorAll('.sub-tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
-
-            document.getElementById(subId).classList.add('active');
-            document.getElementById('btn-' + subId).classList.add('active');
             
-            const btn = document.getElementById('btn-' + subId);
-            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            // Scroll to top when changing tab
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // --- VOCABULARY DATA ---
@@ -974,7 +945,6 @@
             
             // Open default tabs
             openTab('tab1');
-            openSubTab('sub1');
         };
     </script>
 </body>
