@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aptis Speaking Master - StudywithMsNhung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #26A69A; 
+            --primary-dark: #00796B;
+            --primary-light: #E0F2F1;
+            --bg-body: #F1F5F9;
+            --bg-surface: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        body { 
+            font-family: 'Inter', 'Noto Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main);
+            overflow: hidden; /* Prevent body scroll, manage scroll inside tabs */
+        }
+
+        /* Custom Scrollbar for independent columns */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        .custom-scroll { scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent; }
+
+        /* Navigation */
+        .nav-scroll::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            color: var(--text-muted);
+        }
+        .tab-btn:hover { color: var(--primary-dark); background-color: rgba(38, 166, 154, 0.05); }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; background-color: var(--primary-light); }
+
+        .tab-content { display: none; height: calc(100vh - 130px); }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Form Components Typography */
+        .form-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .badge-opening { background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD; }
+        .badge-body { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+        .badge-closing { background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; }
+        .badge-tip { background: #F3E8FF; color: #7E22CE; border: 1px solid #E9D5FF; }
+        .badge-similarity { background: #FFEDD5; color: #C2410C; border: 1px solid #FED7AA; }
+        .badge-difference { background: #FCE7F3; color: #BE185D; border: 1px solid #FBCFE8; }
+
+        .blank-space { display: inline-block; min-width: 50px; border-bottom: 1.5px dashed var(--primary); margin: 0 4px; position: relative; top: -2px; }
+        
+        .card { background: white; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        /* Two-column layout container */
+        .split-layout { display: flex; flex-direction: column; height: 100%; gap: 1rem; }
+        @media (min-width: 768px) {
+            .split-layout { flex-direction: row; }
+            .split-col { height: 100%; overflow-y: auto; padding-right: 8px; }
+        }
+
+        /* Test Accordion */
+        .test-header { cursor: pointer; transition: background 0.2s; }
+        .test-header:hover { background: #F8FAFC; }
+        .test-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="bg-white border-b border-gray-200 z-10 shadow-sm flex-shrink-0">
+        <div class="max-w-screen-2xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
+                        Aptis<span class="text-[#26A69A]">Master</span>
+                    </h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">StudywithMsNhung</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <nav class="border-t border-gray-100 bg-gray-50/50">
+            <div class="max-w-screen-2xl mx-auto">
+                <div class="flex overflow-x-auto nav-scroll custom-scroll">
+                    <button onclick="openTab('tab1')" id="btn-tab1" class="tab-btn active px-4 py-3 text-sm font-semibold flex items-center whitespace-nowrap min-w-max">
+                        <i class="fas fa-image mr-2 text-[#26A69A]"></i> 1. Tả 1 Tranh
+                    </button>
+                    <button onclick="openTab('tab2')" id="btn-tab2" class="tab-btn px-4 py-3 text-sm font-semibold flex items-center whitespace-nowrap min-w-max">
+                        <i class="fas fa-images mr-2 text-[#26A69A]"></i> 2. So Sánh Tranh
+                    </button>
+                    <button onclick="openTab('tab3')" id="btn-tab3" class="tab-btn px-4 py-3 text-sm font-semibold flex items-center whitespace-nowrap min-w-max">
+                        <i class="fas fa-list-ul mr-2 text-[#26A69A]"></i> 3. Form A-R-E & Từ vựng
+                    </button>
+                    <button onclick="openTab('tab4')" id="btn-tab4" class="tab-btn px-4 py-3 text-sm font-semibold flex items-center whitespace-nowrap min-w-max">
+                        <i class="fas fa-book-open mr-2 text-[#26A69A]"></i> 4. Kể Chuyện Part 4
+                    </button>
+                    <button onclick="openTab('tab5')" id="btn-tab5" class="tab-btn px-4 py-3 text-sm font-semibold flex items-center whitespace-nowrap min-w-max bg-[#E0F2F1]">
+                        <i class="fas fa-dumbbell mr-2 text-[#00796B]"></i> 5. Luyện Đề Tổng Hợp
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow p-4 md:p-6 overflow-hidden">
+        
+        <!-- TAB 1: Miêu tả 1 tranh -->
+        <section id="tab1" class="tab-content active overflow-y-auto custom-scroll max-w-4xl mx-auto pb-10">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Form: Miêu tả 1 bức tranh</h2>
+                    <p class="text-gray-500 text-sm mt-1">Cấu trúc: Opening – Body (people / scene) – Closing</p>
+                </div>
+                <div class="h-12 w-12 bg-[#E0F2F1] text-[#26A69A] rounded-full flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-image"></i>
+                </div>
+            </div>
+
+            <div class="space-y-6" id="form-ta-1-tranh">
+                <!-- Data injected via JS to keep HTML DRY, but for Tab 1 & 2 we hardcode for clear styling -->
+                <div class="card p-6 border-l-4 border-l-[#0284C7]">
+                    <span class="form-badge badge-opening">1. Mở bài (Opening)</span>
+                    <ul class="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                        <li>The picture shows a person who is V-ing O. <span class="text-xs text-gray-400 italic">(số ít)</span></li>
+                        <li>The picture shows people who are V-ing O. <span class="text-xs text-gray-400 italic">(số nhiều)</span></li>
+                        <li>In this picture, I can see <span class="blank-space"></span>. <span class="text-xs text-gray-400 italic">(câu mở thay thế)</span></li>
+                    </ul>
+                </div>
+
+                <div class="card p-6 border-l-4 border-l-[#D97706]">
+                    <span class="form-badge badge-body">2. Thân bài (Body)</span>
+                    
+                    <div class="mt-4 bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <h4 class="font-bold text-orange-800 mb-2 flex items-center"><i class="fas fa-user-friends mr-2"></i>Tả người</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>There are <span class="blank-space w-8"></span> people in the picture.</li>
+                            <li>S/he looks young / old / middle-aged. Maybe he/she is in his/her <span class="blank-space w-16"></span> <span class="text-xs text-gray-500">(twenties, thirties...).</span></li>
+                            <li>S/he is wearing casual / formal clothes. They look nice on him/her.</li>
+                            <li>He/she is V-ing <span class="text-xs text-gray-500">(hành động).</span></li>
+                            <li>Judging from his/her facial expression, I suppose he/she is feeling <span class="blank-space w-16"></span> <span class="text-xs text-gray-500">(cảm xúc).</span></li>
+                        </ul>
+                        <div class="mt-3 text-sm bg-white p-3 rounded border border-orange-200">
+                            <span class="form-badge badge-tip"><i class="fas fa-lightbulb mr-1"></i>Tip</span><br>
+                            "clothes" luôn ở số nhiều &rarr; dùng "They look nice", không dùng "It looks nice". Nói tuổi: "in his/her twenties/thirties", không phải "at his/her...".
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-yellow-50/50 p-4 rounded-lg border border-yellow-100">
+                        <h4 class="font-bold text-yellow-800 mb-2 flex items-center"><i class="fas fa-tree mr-2"></i>Tả khung cảnh</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>Overall, the picture looks nice and lively.</li>
+                            <li>In the background, I can see many things, such as <span class="blank-space"></span>.</li>
+                            <li>I guess the weather is hot / cold / pleasant.</li>
+                        </ul>
+                        <div class="mt-3 text-sm bg-white p-3 rounded border border-yellow-200">
+                            <span class="form-badge badge-tip"><i class="fas fa-lightbulb mr-1"></i>Tip</span><br>
+                            Lỗi hay gặp: "guest" (khách) &ne; "guess" (đoán). Dùng "I guess..." cho phần phỏng đoán thời tiết.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 border-l-4 border-l-[#16A34A]">
+                    <span class="form-badge badge-closing">3. Kết bài (Closing)</span>
+                    <p class="text-sm text-gray-500 mb-2 italic">Một câu dùng chung cho mọi bức tranh:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>All in all, it is a pleasant picture, and it reminds me of <span class="blank-space"></span> / makes me feel <span class="blank-space"></span>.</li>
+                        <li>All in all, I think it is a lovely picture that I really enjoy looking at. <span class="text-xs text-gray-400 italic">(bản ngắn gọn hơn)</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: So sánh tranh -->
+        <section id="tab2" class="tab-content overflow-y-auto custom-scroll max-w-4xl mx-auto pb-10">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Form: So sánh 2 bức tranh</h2>
+                    <p class="text-gray-500 text-sm mt-1">Cấu trúc: Opening – Similarities / Differences – Closing</p>
+                </div>
+                <div class="h-12 w-12 bg-[#E0F2F1] text-[#26A69A] rounded-full flex items-center justify-center text-xl shadow-sm">
+                    <i class="fas fa-images"></i>
+                </div>
+            </div>
+
+            <div class="space-y-6" id="form-so-sanh">
+                <div class="card p-6 border-l-4 border-l-[#0284C7]">
+                    <span class="form-badge badge-opening">1. Mở bài (Opening)</span>
+                    <p class="text-gray-700 mt-2">The two pictures show people <span class="bg-gray-100 px-2 py-1 rounded text-sm">(relaxing / studying / working / eating)</span> in different places.</p>
+                </div>
+
+                <div class="card p-6 border-l-4 border-l-[#D97706]">
+                    <span class="form-badge badge-body">2. Thân bài (Body)</span>
+                    
+                    <div class="mt-4 bg-orange-50/30 p-4 rounded-lg border border-orange-100">
+                        <span class="form-badge badge-similarity"><i class="fas fa-equals mr-1"></i>Điểm giống (Similarities)</span>
+                        <ul class="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                            <li>Both pictures share several things in common.</li>
+                            <li>Both look lively with gorgeous colours.</li>
+                            <li>The people in both pictures seem to be <span class="blank-space w-16"></span> <span class="text-xs text-gray-500">(cảm xúc)</span>.</li>
+                        </ul>
+                        <div class="mt-3 text-sm text-orange-800 bg-orange-100/50 p-2 rounded">
+                            <i class="fas fa-info-circle mr-1"></i> Tip: "Both" đi với động từ số nhiều &rarr; "Both look", không phải "Both looks".
+                        </div>
+                    </div>
+
+                    <div class="mt-4 bg-pink-50/30 p-4 rounded-lg border border-pink-100">
+                        <span class="form-badge badge-difference"><i class="fas fa-not-equal mr-1"></i>Điểm khác (Differences)</span>
+                        <p class="mt-2 text-gray-700 font-medium">There are still some clear differences between the two.</p>
+                        
+                        <div class="mt-3 space-y-4">
+                            <div class="pl-4 border-l-2 border-pink-200">
+                                <p class="font-semibold text-sm text-pink-700">1. Số lượng / tuổi người</p>
+                                <p class="text-gray-700 text-sm">First of all, let's talk about the number and age of the people.</p>
+                                <p class="text-gray-700 text-sm">In the first picture, there are <span class="blank-space w-12"></span> whereas in the second picture, there are <span class="blank-space w-12"></span> <span class="text-xs text-gray-500">(giới tính, tuổi tác...)</span></p>
+                            </div>
+                            <div class="pl-4 border-l-2 border-pink-200">
+                                <p class="font-semibold text-sm text-pink-700">2. Nơi chốn</p>
+                                <p class="text-gray-700 text-sm">Secondly, the two pictures were taken in different places.</p>
+                                <p class="text-gray-700 text-sm">I suppose the first one was taken in <span class="blank-space w-16"></span> and the second was taken in <span class="blank-space w-16"></span></p>
+                            </div>
+                            <div class="pl-4 border-l-2 border-pink-200">
+                                <p class="font-semibold text-sm text-pink-700">3. Hành động</p>
+                                <p class="text-gray-700 text-sm">The actions of the people are also completely different.</p>
+                                <p class="text-gray-700 text-sm">The first picture shows people V-ing but the second shows people V-ing.</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm bg-white p-3 rounded border border-pink-200">
+                            <span class="form-badge badge-tip"><i class="fas fa-lightbulb mr-1"></i>Tip</span><br>
+                            Sửa lỗi hay gặp: "a bout" &rarr; "about"; "clearly differences" &rarr; "clear differences"; "The actions ... is" &rarr; "are".
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 border-l-4 border-l-[#16A34A]">
+                    <span class="form-badge badge-closing">3. Kết bài (Closing)</span>
+                    <p class="text-sm text-gray-500 mb-2 italic">Một câu dùng chung cho mọi bài so sánh:</p>
+                    <p class="text-gray-700">All in all, despite a few differences, both pictures share the same lively atmosphere, and I really enjoy looking at them.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: A-R-E & Từ vựng (2 CỘT) -->
+        <section id="tab3" class="tab-content max-w-screen-2xl mx-auto h-full">
+            <div class="split-layout">
+                
+                <!-- Left Column: Đề mẫu P1,2,3 -->
+                <div class="split-col md:w-[45%] lg:w-[40%] custom-scroll pb-10">
+                    <div class="sticky top-0 bg-white/90 backdrop-blur pb-4 pt-1 z-10">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-question-circle text-[#26A69A] mr-2"></i> Đề mẫu P1-2-3
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-1">Trích xuất từ Bộ đề dự đoán</p>
+                    </div>
+                    
+                    <div id="general-questions-container" class="space-y-4 pr-2">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Right Column: Form A-R-E & Vocab -->
+                <div class="split-col md:w-[55%] lg:w-[60%] custom-scroll pb-10 bg-white rounded-xl border border-gray-200 p-4 md:p-6 shadow-sm" id="form-are">
+                    
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-2">Form A-R-E (Answer - Reason - Example)</h2>
+                        <p class="text-sm text-gray-600 mt-2 italic bg-gray-50 p-2 rounded border-l-2 border-gray-300">State your answer directly first. Then expand with the reasons and examples below.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <!-- Physical -->
+                        <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                            <h4 class="font-bold text-blue-800 text-sm uppercase tracking-wide mb-2"><i class="fas fa-running mr-1"></i>Physical Health</h4>
+                            <p class="text-sm text-gray-700 mb-2">First of all, it is incredibly good for my physical health.</p>
+                            <ul class="text-sm text-gray-600 list-disc pl-4 space-y-1 mb-2">
+                                <li>Keep fit and boost my stamina.</li>
+                                <li>Strengthen my immune system.</li>
+                            </ul>
+                            <p class="text-sm text-gray-700 bg-white p-2 rounded text-xs">Ex: For example, [S + V + O] on a daily basis.</p>
+                        </div>
+                        <!-- Mental -->
+                        <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                            <h4 class="font-bold text-purple-800 text-sm uppercase tracking-wide mb-2"><i class="fas fa-brain mr-1"></i>Mental State</h4>
+                            <p class="text-sm text-gray-700 mb-2">Additionally, it also plays an important role in improving my mental wellbeing.</p>
+                            <ul class="text-sm text-gray-600 list-disc pl-4 space-y-1 mb-2">
+                                <li>Feel relaxed and lifts my mood.</li>
+                                <li>Recharge my batteries.</li>
+                                <li>Enriches social life / strengthen bonds.</li>
+                            </ul>
+                            <p class="text-sm text-gray-700 bg-white p-2 rounded text-xs">Ex: [S + V + O] whenever I have free time.</p>
+                        </div>
+                        <!-- Knowledge -->
+                        <div class="bg-green-50 border border-green-100 rounded-lg p-4">
+                            <h4 class="font-bold text-green-800 text-sm uppercase tracking-wide mb-2"><i class="fas fa-book mr-1"></i>Knowledge</h4>
+                            <p class="text-sm text-gray-700 mb-2">Lastly, it gives me chances to broaden my knowledge and horizons about the world.</p>
+                            <ul class="text-sm text-gray-600 list-disc pl-4 space-y-1 mb-2">
+                                <li>Gain a deeper understanding of <span class="blank-space w-8 border-gray-400"></span>.</li>
+                                <li>Exposes me to new ideas.</li>
+                            </ul>
+                            <p class="text-sm text-gray-700 bg-white p-2 rounded text-xs">Ex: For example, I learned <span class="blank-space w-8 border-gray-400"></span> that I would never have known otherwise.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-gray-800 bg-gray-100 p-2 rounded"><i class="fas fa-spell-check text-[#26A69A] mr-2"></i>Bảng Từ Vựng PMK & Tính từ</h3>
+                    </div>
+                    
+                    <div class="overflow-x-auto rounded-lg border border-gray-200">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 border-b">
+                                    <th class="p-3 font-semibold text-gray-600 w-1/4">Từ Đơn Giản</th>
+                                    <th class="p-3 font-semibold text-[#00796B] w-1/3">Nâng Cấp (B2-C1)</th>
+                                    <th class="p-3 font-semibold text-gray-600">Ví dụ / Áp dụng</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100" id="vocab-table">
+                                <!-- JS injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 4: Kể chuyện Part 4 (2 CỘT) -->
+        <section id="tab4" class="tab-content max-w-screen-2xl mx-auto h-full">
+            <div class="split-layout">
+                
+                <!-- Left Column: Bộ đề 1-15 (Focus Part 4) -->
+                <div class="split-col md:w-[45%] lg:w-[40%] custom-scroll pb-10">
+                    <div class="sticky top-0 bg-white/90 backdrop-blur pb-4 pt-1 z-10 flex justify-between items-center pr-2">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-file-alt text-[#26A69A] mr-2"></i> 15 Đề Dự Đoán
+                            </h2>
+                            <p class="text-xs text-gray-500 mt-1">Focus vào Part 4 (Kể chuyện)</p>
+                        </div>
+                        <span class="bg-[#E0F2F1] text-[#00796B] text-xs font-bold px-2 py-1 rounded">Bộ mới nhất</span>
+                    </div>
+                    
+                    <div id="tests-part4-container" class="space-y-3 pr-2">
+                        <!-- Rendered by JS Accordion -->
+                    </div>
+                </div>
+
+                <!-- Right Column: Form Kể chuyện -->
+                <div class="split-col md:w-[55%] lg:w-[60%] custom-scroll pb-10" id="form-ke-chuyen">
+                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                        <div class="mb-6 flex items-center border-b pb-3">
+                            <div class="h-10 w-10 bg-indigo-100 text-indigo-600 rounded flex items-center justify-center text-lg mr-3">
+                                <i class="fas fa-book-reader"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800">Form Kể chuyện (Part 4)</h2>
+                                <p class="text-sm text-gray-500">Opening – Body (context/emotion/events) – Closing + B/C</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-l-[#0284C7] pl-4">
+                                <span class="form-badge badge-opening">A. Kể chuyện - Mở bài</span>
+                                <div class="bg-gray-50 p-3 rounded mt-2 text-sm text-gray-700 space-y-1">
+                                    <p>Over the course of my life, I have experienced numerous moments when <span class="blank-space w-24"></span>.</p>
+                                    <p>Each of them has left me with unique emotions and meaningful lessons.</p>
+                                    <p>However, there is one that was so memorable that I will never forget it. Let me tell you about it.</p>
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-l-[#D97706] pl-4">
+                                <span class="form-badge badge-body">A. Kể chuyện - Thân bài</span>
+                                <div class="bg-orange-50/30 p-4 rounded mt-2 border border-orange-100 space-y-3">
+                                    <div>
+                                        <span class="font-bold text-xs uppercase text-orange-800">1. Bối cảnh</span>
+                                        <p class="text-sm text-gray-700">As far as I can remember, it happened about <span class="blank-space w-16"></span> ago, when I was a student. At that time, I had to <span class="blank-space w-24"></span>.</p>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-xs uppercase text-orange-800">2. Cảm xúc ban đầu</span>
+                                        <p class="text-sm text-gray-700">To be honest, I felt <span class="blank-space w-20"></span> when I first heard about it, but everything turned out in an unpredictable way.</p>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-xs uppercase text-orange-800">3. Diễn biến</span>
+                                        <p class="text-sm text-gray-700">First, I + V(ed). After that, <span class="blank-space w-16"></span> + V(ed). Later on, <span class="blank-space w-20"></span>.</p>
+                                        <p class="text-sm text-gray-700">I was so surprised that <span class="blank-space w-24"></span>. In the end, I realised that + mệnh đề.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-xs bg-white p-2 rounded border border-gray-200">
+                                    <span class="font-bold text-indigo-600">Tip:</span> Tránh lặp "Then... Then...". Dùng linh hoạt: First / After that / Later on / Eventually / In the end.
+                                </div>
+                            </div>
+
+                            <div class="border-l-4 border-l-[#16A34A] pl-4">
+                                <span class="form-badge badge-closing">A. Kể chuyện - Kết bài</span>
+                                <div class="bg-gray-50 p-3 rounded mt-2 text-sm text-gray-700 space-y-1">
+                                    <p>To me, it was such an unforgettable experience. I learned a really important lesson about <span class="blank-space w-24"></span>.</p>
+                                    <p>Since then, I have definitely never <span class="blank-space w-24"></span> again.</p>
+                                </div>
+                                <div class="mt-2 text-xs bg-white p-2 rounded border border-gray-200 text-red-600">
+                                    <span class="font-bold">Lưu ý lỗi chính tả:</span> experieced &rarr; experienced; expericence &rarr; experience; deffinitely &rarr; definitely.
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dashed pt-4 mt-6">
+                                <h3 class="font-bold text-lg text-gray-800 mb-2">B & C - Hai câu hỏi còn lại</h3>
+                                <p class="text-sm text-gray-600 mb-2">Part 4 thường có 3 câu hỏi. Mở đầu câu trả lời một cách trang trọng:</p>
+                                <ul class="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                                    <li><b class="text-indigo-600">Q2:</b> As for the second question, I'd say that <span class="blank-space"></span>.</li>
+                                    <li><b class="text-indigo-600">Q3:</b> Regarding the third question, in my opinion <span class="blank-space"></span>.</li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2 italic"><i class="fas fa-angle-right"></i> Áp dụng lại form Answer - Reason - Example (Bên Tab 3) cho 2 câu này.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 5: Luyện Đề (2 CỘT) -->
+        <section id="tab5" class="tab-content max-w-screen-2xl mx-auto h-full">
+            <div class="split-layout">
+                
+                <!-- Left Column: Đề 1-15 Full -->
+                <div class="split-col md:w-[45%] lg:w-[40%] custom-scroll pb-10">
+                    <div class="sticky top-0 bg-[#F1F5F9] pb-4 pt-1 z-10 flex justify-between items-center pr-2">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-tasks text-[#00796B] mr-2"></i> Đề Luyện Tập
+                            </h2>
+                            <p class="text-xs text-gray-500 mt-1">Full 4 Parts từ 1-15</p>
+                        </div>
+                    </div>
+                    
+                    <div id="full-tests-container" class="space-y-3 pr-2">
+                        <!-- Rendered by JS Accordion -->
+                    </div>
+                </div>
+
+                <!-- Right Column: All Forms Stacked -->
+                <div class="split-col md:w-[55%] lg:w-[60%] custom-scroll pb-10 bg-white rounded-xl border border-gray-200 p-2 md:p-4 shadow-inner relative">
+                    <div class="sticky top-0 bg-white/95 backdrop-blur z-10 border-b pb-2 mb-4">
+                        <h2 class="text-lg font-bold text-gray-800">Cẩm Nang Form Speaking</h2>
+                        <div class="flex gap-2 mt-2 overflow-x-auto nav-scroll">
+                            <button onclick="scrollToForm('t5-f1')" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full whitespace-nowrap">Tả 1 tranh</button>
+                            <button onclick="scrollToForm('t5-f2')" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full whitespace-nowrap">So sánh tranh</button>
+                            <button onclick="scrollToForm('t5-f3')" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full whitespace-nowrap">A-R-E</button>
+                            <button onclick="scrollToForm('t5-f4')" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full whitespace-nowrap">Kể chuyện</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8 pr-2">
+                        <!-- Content cloned dynamically via JS to avoid huge HTML file, 
+                             but we place anchors here -->
+                        <div id="t5-f1" class="scroll-mt-24"><div class="text-center p-4 text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading Form 1...</div></div>
+                        <hr class="border-dashed border-gray-300">
+                        <div id="t5-f2" class="scroll-mt-24"><div class="text-center p-4 text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading Form 2...</div></div>
+                        <hr class="border-dashed border-gray-300">
+                        <div id="t5-f3" class="scroll-mt-24"><div class="text-center p-4 text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading Form 3...</div></div>
+                        <hr class="border-dashed border-gray-300">
+                        <div id="t5-f4" class="scroll-mt-24"><div class="text-center p-4 text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading Form 4...</div></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Data Structure for the 15 Tests
+        const aptisTests = [
+            {
+                id: 1,
+                p1: ["What did you do yesterday?", "Please tell me about your friend.", "Please tell me about your favorite film."],
+                p2: { q1: "Describe this picture.", q2: "What kind of things do you enjoy reading?", q3: "Why do people enjoy reading books?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are some benefits of shopping in these 2 places?", q3: "Where do you think people will shop in the future?" },
+                p4: { q1: "Tell me about a time when you tried hard to achieve something.", q2: "How did you feel when you succeeded?", q3: "How can people be encouraged to achieve hard things?" }
+            },
+            {
+                id: 2,
+                p1: ["Please tell me about your favorite place.", "Please tell me about your favorite film star.", "Please tell me about the last time you saw an advertisement."],
+                p2: { q1: "Describe this picture.", q2: "What do you eat for breakfast?", q3: "Do you think people should eat breakfast?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the attractions of the activities in the two pictures?", q3: "What is the appeal of growing plants and doing gardening?" },
+                p4: { q1: "Describe a time when you visited someone.", q2: "What do you think about having unexpected visitors?", q3: "Some people like to live in small communities, while others like to live in big cities. What is your opinion?" }
+            },
+            {
+                id: 3,
+                p1: ["Please tell me about your typical day.", "What sports do people play in your country?", "Please tell me about your favorite place."],
+                p2: { q1: "Describe this picture.", q2: "Tell me about a time when you felt tired.", q3: "How important is it for you to get enough sleep?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the attractions of these activities?", q3: "\"Playing games is for children, not for adults.\" What do you think?" },
+                p4: { q1: "Describe a time when you learned something new.", q2: "How do you feel when you learn something new?", q3: "\"You are never too old to learn new things.\" Do you agree or disagree?" }
+            },
+            {
+                id: 4,
+                p1: ["Please tell me about the last thing you saw on television.", "Please tell me about your favorite film star.", "Please tell me about a famous place."],
+                p2: { q1: "Describe this picture.", q2: "Tell me about a time you were in a crowded place.", q3: "What is it that most people dislike about crowded places?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What is your favorite sport?", q3: "What are the differences and benefits of indoor and outdoor activities?" },
+                p4: { q1: "Describe a time you went to an amusement park.", q2: "How do you feel when going to these places?", q3: "Rides at amusement parks are scary. Why do most people take part in these activities?" }
+            },
+            {
+                id: 5,
+                p1: ["Please tell me about the last time you visited friends.", "Tell me about the last time you went to the cinema.", "Describe a typical meal in your country."],
+                p2: { q1: "Describe this picture.", q2: "When was the last time you visited a new place?", q3: "Why do people like to visit new places?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "Which resort do you prefer? Why?", q3: "What are the characteristics that make a good resort?" },
+                p4: { q1: "When was the last time someone helped you?", q2: "How did you feel?", q3: "How can we encourage people to cooperate with each other?" }
+            },
+            {
+                id: 6,
+                p1: ["What is the best way to travel in your country?", "Please tell me about your journey here today.", "What do you like to do with your friends?"],
+                p2: { q1: "Describe this picture.", q2: "What is your experience with using a computer?", q3: "\"Technology makes our lives easier.\" Do you agree or disagree?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the attractions of these sports?", q3: "Which key factors can influence the popularity of sports?" },
+                p4: { q1: "Describe a time you saw an impressive work of art.", q2: "How did you feel?", q3: "\"It is impossible to teach children to be creative.\" Do you agree?" }
+            },
+            {
+                id: 7,
+                p1: ["What activities do you usually do with your friends?", "Tell me about your hobby.", "Describe something you are planning to do in the future."],
+                p2: { q1: "Describe this picture.", q2: "When was the last time you were in a car?", q3: "How can people pass the time on a long journey?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the difficulties of both sports?", q3: "Why do some people prefer team sports to individual sports?" },
+                p4: { q1: "Describe a time you were very busy.", q2: "How do you feel when you are busy?", q3: "If people work less, will their lives become better?" }
+            },
+            {
+                id: 8,
+                p1: ["Describe your bedroom.", "Please tell me about the last time you went to the cinema.", "What are you wearing today?"],
+                p2: { q1: "Describe this picture.", q2: "Tell me about a time when you used public transport.", q3: "Do you think we should use public transport more? Why or why not?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the benefits of these 2 activities?", q3: "Do you think it is easier to learn when we enjoy doing it?" },
+                p4: { q1: "Tell me about a time when you couldn't buy something you wanted.", q2: "How did you feel at that time?", q3: "\"Material possessions alone cannot make people happy.\" Do you agree or disagree?" }
+            },
+            {
+                id: 9,
+                p1: ["What did you do last night?", "What is your favorite season?", "Who is your favorite movie star?"],
+                p2: { q1: "Describe this picture.", q2: "Tell me about the last time you went shopping for clothes.", q3: "Why do some people dislike shopping for clothes?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the attractions of visiting these 2 places?", q3: "Which place would you prefer to visit and why?" },
+                p4: { q1: "What are the different ways you use the Internet?", q2: "How do you feel when you use the Internet?", q3: "Some people say that the Internet has a bad impact on our lives. What do you think?" }
+            },
+            {
+                id: 10,
+                p1: ["What is the best way to travel in your country?", "What do people in your country like to read?", "Describe your journey here today."],
+                p2: { q1: "Describe this picture.", q2: "Tell me about a time when you went somewhere in a car.", q3: "Do you think people should learn to drive? Why or why not?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "Which one do you prefer?", q3: "What are the benefits of listening to music?" },
+                p4: { q1: "Tell me about a time you read a good book.", q2: "How do you feel when you read a book for pleasure?", q3: "Some people love watching films more than reading books. What do you think?" }
+            },
+            {
+                id: 11,
+                p1: ["Please tell me about your friends.", "Please tell me about your first school.", "What do people in your country like to read?"],
+                p2: { q1: "Describe this picture.", q2: "When was the last time you went to work?", q3: "Why is it important for people to enjoy their work?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the differences between buying in these two places?", q3: "What are the attractions of buying expensive things?" },
+                p4: { q1: "Talk about a time when you asked a question.", q2: "Is it easy to ask a question?", q3: "Some subjects are more difficult for many people. What do you think?" }
+            },
+            {
+                id: 12,
+                p1: ["Please tell me about your family.", "Please tell me about the last time you visited friends.", "Please tell me about your first school."],
+                p2: { q1: "Describe this picture.", q2: "How do you usually find out about the news?", q3: "Why is it important to read the news every day?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "Do you prefer recording memories in pictures or in words? Why?", q3: "Why do people like taking photos with their mobile phones?" },
+                p4: { q1: "Tell me about a time you worked with someone older or younger than you.", q2: "How did you feel in this situation?", q3: "How do you think different generations can learn from each other?" }
+            },
+            {
+                id: 13,
+                p1: ["Please tell me about your journey here today.", "Please tell me about your friends.", "Please tell me about your favorite time of year."],
+                p2: { q1: "Describe this picture.", q2: "When and where do you meet your friends?", q3: "Why do some people have many friends?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What are the appeals of these 2 ways of eating?", q3: "Is it important to choose what to eat carefully?" },
+                p4: { q1: "Tell me about a time you spent surrounded by nature.", q2: "How did you feel at that time?", q3: "How can people be encouraged to protect and preserve nature?" }
+            },
+            {
+                id: 14,
+                p1: ["Describe a typical meal in your country.", "What do people in your country like to read?", "Please tell me about your favorite time of year."],
+                p2: { q1: "Describe this picture.", q2: "When was the last time you had a meal with your family?", q3: "Why is it important to have family meals together?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "What is the difference between these kinds of travel?", q3: "What are the benefits of traveling by train?" },
+                p4: { q1: "Describe a time when you had to do something you didn't want to.", q2: "How did you feel when it ended?", q3: "How do people motivate themselves to do things that they don't like?" }
+            },
+            {
+                id: 15,
+                p1: ["Please tell me about the last time you saw an advertisement.", "What sports do people like in your country?", "What is the best way to travel around your country?"],
+                p2: { q1: "Describe this picture.", q2: "Tell me about a time you shopped in a small local market.", q3: "Why do people love shopping on the Internet?" },
+                p3: { q1: "Describe these 2 pictures.", q2: "Which food do you prefer?", q3: "Why do people like to eat different types of food?" },
+                p4: { q1: "Describe a time you watched or played an extreme sport.", q2: "How did you feel when you played/watched the extreme sport?", q3: "\"Only adults should be allowed to play extreme sports.\" What do you think about it?" }
+            }
+        ];
+
+        // Vocabulary Data
+        const vocabList = [
+            { basic: "Good for health", advanced: "Immensely beneficial for physical health", ex: "keep fit / boost stamina" },
+            { basic: "Make me happy", advanced: "Absolutely delighted / Over the moon", ex: "lifts my mood / recharge batteries" },
+            { basic: "Make me relaxed", advanced: "Truly therapeutic / Completely stress-free", ex: "after a hectic day" },
+            { basic: "Learn new things", advanced: "Broaden my knowledge and horizons", ex: "exposes me to new ideas" },
+            { basic: "Make friends", advanced: "Enrich social life / Strengthen bonds", ex: "share the same interests" },
+            { basic: "Tired", advanced: "Physically exhausted / Completely drained", ex: "after working long hours" }
+        ];
+
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'bg-[#E0F2F1]', 'text-[#00796B]'));
+            
+            document.getElementById(tabId).classList.add('active');
+            let btn = document.getElementById('btn-' + tabId);
+            btn.classList.add('active');
+            // Specific styling for active tab background
+            if(tabId === 'tab5') {
+                 btn.classList.add('bg-[#E0F2F1]', 'text-[#00796B]');
+            }
+        }
+
+        function scrollToForm(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                // Find parent scroll container
+                const container = el.closest('.custom-scroll');
+                container.scrollTo({
+                    top: el.offsetTop - container.offsetTop - 10,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function toggleAccordion(id, iconId) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close others in the same group optionally (skipping for better UX reading multiple tests)
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function initApp() {
+            // 1. Populate Vocab Table (Tab 3)
+            const tbody = document.getElementById('vocab-table');
+            vocabList.forEach(item => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="p-3 text-gray-700">${item.basic}</td>
+                        <td class="p-3 font-semibold text-[#00796B]">${item.advanced}</td>
+                        <td class="p-3 text-gray-500 text-xs italic">${item.ex}</td>
+                    </tr>
+                `;
+            });
+
+            // 2. Populate Tab 3 Left Col (General Qs P1,2,3 from tests 1-5)
+            const qContainer = document.getElementById('general-questions-container');
+            aptisTests.slice(0, 5).forEach(test => {
+                qContainer.innerHTML += `
+                    <div class="card p-4 border-l-4 border-l-[#26A69A]">
+                        <h3 class="font-bold text-sm text-gray-800 mb-2 border-b pb-1">Trích Đề ${test.id}</h3>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="text-[10px] font-bold bg-gray-200 px-1 rounded text-gray-600">Part 1</span>
+                                <ul class="list-disc pl-4 text-xs text-gray-700 mt-1">
+                                    ${test.p1.map(q => `<li>${q}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold bg-gray-200 px-1 rounded text-gray-600">Part 2/3 Mix</span>
+                                <ul class="list-disc pl-4 text-xs text-gray-700 mt-1">
+                                    <li>${test.p2.q2}</li>
+                                    <li>${test.p3.q2}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 3. Populate Tab 4 Left Col (Focus Part 4)
+            const p4Container = document.getElementById('tests-part4-container');
+            aptisTests.forEach(test => {
+                const headerId = `p4-header-${test.id}`;
+                const contentId = `p4-content-${test.id}`;
+                const iconId = `p4-icon-${test.id}`;
+                
+                p4Container.innerHTML += `
+                    <div class="card">
+                        <div class="test-header p-4 flex justify-between items-center" onclick="toggleAccordion('${contentId}', '${iconId}')">
+                            <h3 class="font-bold text-[#00796B]">Đề ${test.id}</h3>
+                            <i id="${iconId}" class="fas fa-chevron-down text-gray-400 transition-transform"></i>
+                        </div>
+                        <div id="${contentId}" class="test-content bg-gray-50">
+                            <div class="p-4 border-t border-gray-100 text-sm space-y-3">
+                                <div class="bg-indigo-50 border-l-2 border-indigo-400 p-2 rounded">
+                                    <span class="font-bold text-indigo-700 text-xs block mb-1">Main Topic:</span>
+                                    <p class="text-gray-800 font-medium">${test.p4.q1}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600"><span class="font-bold text-gray-500 text-xs mr-1">Q2:</span> ${test.p4.q2}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600"><span class="font-bold text-gray-500 text-xs mr-1">Q3:</span> ${test.p4.q3}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 4. Populate Tab 5 Left Col (Full Tests)
+            const fullContainer = document.getElementById('full-tests-container');
+            aptisTests.forEach(test => {
+                const contentId = `full-content-${test.id}`;
+                const iconId = `full-icon-${test.id}`;
+                
+                fullContainer.innerHTML += `
+                    <div class="card border-l-4 border-l-[#26A69A]">
+                        <div class="test-header p-4 flex justify-between items-center bg-white" onclick="toggleAccordion('${contentId}', '${iconId}')">
+                            <h3 class="font-bold text-gray-800">Bộ Đề Số ${test.id}</h3>
+                            <i id="${iconId}" class="fas fa-chevron-down text-[#26A69A] transition-transform"></i>
+                        </div>
+                        <div id="${contentId}" class="test-content bg-gray-50">
+                            <div class="p-4 border-t border-gray-200 text-sm space-y-4">
+                                <!-- P1 -->
+                                <div>
+                                    <h4 class="font-bold text-[#00796B] mb-1">Part 1</h4>
+                                    <ul class="list-disc pl-4 text-gray-700 space-y-1">
+                                        ${test.p1.map(q => `<li>${q}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <!-- P2 -->
+                                <div>
+                                    <h4 class="font-bold text-[#00796B] mb-1">Part 2</h4>
+                                    <ul class="list-disc pl-4 text-gray-700 space-y-1">
+                                        <li>${test.p2.q1}</li><li>${test.p2.q2}</li><li>${test.p2.q3}</li>
+                                    </ul>
+                                </div>
+                                <!-- P3 -->
+                                <div>
+                                    <h4 class="font-bold text-[#00796B] mb-1">Part 3</h4>
+                                    <ul class="list-disc pl-4 text-gray-700 space-y-1">
+                                        <li>${test.p3.q1}</li><li>${test.p3.q2}</li><li>${test.p3.q3}</li>
+                                    </ul>
+                                </div>
+                                <!-- P4 -->
+                                <div class="bg-indigo-50 p-3 rounded">
+                                    <h4 class="font-bold text-indigo-800 mb-1">Part 4</h4>
+                                    <ul class="list-disc pl-4 text-indigo-900 space-y-1">
+                                        <li class="font-medium">${test.p4.q1}</li>
+                                        <li>${test.p4.q2}</li><li>${test.p4.q3}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 5. Clone Forms into Tab 5 Right Col
+            setTimeout(() => {
+                const f1 = document.getElementById('form-ta-1-tranh').innerHTML;
+                const f2 = document.getElementById('form-so-sanh').innerHTML;
+                const f3 = document.getElementById('form-are').innerHTML;
+                const f4 = document.getElementById('form-ke-chuyen').innerHTML;
+
+                document.getElementById('t5-f1').innerHTML = `<h3 class="text-xl font-bold text-[#0284C7] mb-4"><i class="fas fa-image mr-2"></i>1. Tả 1 Tranh</h3>` + f1;
+                document.getElementById('t5-f2').innerHTML = `<h3 class="text-xl font-bold text-[#D97706] mb-4 mt-8"><i class="fas fa-images mr-2"></i>2. So Sánh Tranh</h3>` + f2;
+                document.getElementById('t5-f3').innerHTML = `<h3 class="text-xl font-bold text-[#16A34A] mb-4 mt-8"><i class="fas fa-list-ul mr-2"></i>3. Phát triển ý A-R-E</h3>` + f3;
+                document.getElementById('t5-f4').innerHTML = `<h3 class="text-xl font-bold text-[#7E22CE] mb-4 mt-8"><i class="fas fa-book-open mr-2"></i>4. Kể chuyện Part 4</h3>` + f4;
+            }, 500); // Small delay to ensure original nodes exist
+        }
+
+        // Run on load
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
